@@ -36,10 +36,10 @@ function App() {
 
     const userActivityData = [
         { progress: 0.25, color: '#59A9A5', text: 'JSX'},
-        { progress: 0.1, color: '#B01A27', text: 'CSS'},
-        { progress: 0.35, color: '#B77417', text: 'HTML'},
+        { progress: 0.1, color: '#B01A27', text: 'CSS', shift: 0.2},
+        { progress: 0.35, color: '#B77417', text: 'HTML',},
         { progress: 0.2, color: '#9C31C6', text: 'CSS'},
-        { progress: 0.1, color: '#1657AC', text: 'HTML'},
+        { progress: 0.1, color: '#1657AC', text: 'HTML', shift: 0.2},
     ];
     const totalUserData = [
         { progress: 0.6, color: '#8a2be2', text: 'JSX'},
@@ -80,6 +80,7 @@ function App() {
                     radius={1.4}
                     innerRadius={0.6}
                     thickness={0.4}
+                    gap={0.05}
                 />
                 <RingChartGroup 
                     position={[5.5,3.5,0]}
@@ -95,6 +96,7 @@ function App() {
                     radius={1.4}
                     innerRadius={0.6}
                     thickness={0.4}
+                    gap={0.05}
                 />
 
 

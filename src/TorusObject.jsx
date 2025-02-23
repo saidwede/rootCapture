@@ -116,7 +116,7 @@ const CurvedLine = ({ startPoint, angle, length = 0.5, color, progress, text }) 
 
 
 class SquareRingGeometry extends THREE.BufferGeometry {
-    constructor(radius = 2, innerRadius = 0.5, thickness = 0.4, segments = 10, startAngle = 0, arcLength, edgeSegments = 10) {
+    constructor(radius = 2, innerRadius = 0.5, thickness = 0.4, segments = 10, startAngle = 0, arcLength, shift = 0, edgeSegments = 10) {
         super();
         
         const vertices = [];
@@ -124,11 +124,11 @@ class SquareRingGeometry extends THREE.BufferGeometry {
         const segmentAngle = arcLength / segments;
         
         // Helper function to create a point on the rounded corner
-        const createCornerPoint = (centerX, centerY, cornerRadius, angle, height) => {
-            const x = centerX + cornerRadius * Math.cos(angle);
-            const y = centerY + cornerRadius * Math.sin(angle);
-            return [x, y, height];
-        };
+        // const createCornerPoint = (centerX, centerY, cornerRadius, angle, height) => {
+        //     const x = centerX + cornerRadius * Math.cos(angle);
+        //     const y = centerY + cornerRadius * Math.sin(angle);
+        //     return [x, y, height];
+        // };
         
         // Create vertices for the detailed cross-section at each segment
         for (let i = 0; i <= segments; i++) {
@@ -153,26 +153,26 @@ class SquareRingGeometry extends THREE.BufferGeometry {
                     let point;
                     if (edge === 0) { // Top edge
                         point = [
-                            (localInnerRadius + (outerRadius - localInnerRadius) * t) * cos,
-                            (localInnerRadius + (outerRadius - localInnerRadius) * t) * sin,
+                            (localInnerRadius + (outerRadius - localInnerRadius) * t + shift) * cos,
+                            (localInnerRadius + (outerRadius - localInnerRadius) * t + shift) * sin,
                             thickness/2
                         ];
                     } else if (edge === 1) { // Right edge
                         point = [
-                            outerRadius * cos,
-                            outerRadius * sin,
+                            (outerRadius + shift) * cos,
+                            (outerRadius + shift) * sin,
                             thickness/2 - thickness * t
                         ];
                     } else if (edge === 2) { // Bottom edge
                         point = [
-                            (localInnerRadius + (outerRadius - localInnerRadius) * t) * cos,
-                            (localInnerRadius + (outerRadius - localInnerRadius) * t) * sin,
+                            (localInnerRadius + (outerRadius - localInnerRadius) * t + shift) * cos,
+                            (localInnerRadius + (outerRadius - localInnerRadius) * t + shift) * sin,
                             -thickness/2
                         ];
                     } else { // Left edge
                         point = [
-                            localInnerRadius * cos,
-                            localInnerRadius * sin,
+                            (localInnerRadius + shift) * cos,
+                            (localInnerRadius + shift) * sin,
                             -thickness/2 + thickness * t
                         ];
                     }
@@ -218,7 +218,7 @@ const ProgressRing = ({
     thickness = 0.3,
     segments = 264,
     segmentData = [
-        { progress: 1, color: '#67129b', text: 'Text'}, // Purple - 30%
+        { progress: 1, color: '#67129b', text: 'Text', shift: 0}, // Purple - 30%
     ],
     gap = 0.10 // Gap in radians between segments
   }) => {
@@ -244,7 +244,8 @@ const ProgressRing = ({
                 thickness, 
                 100, 
                 startAngle, 
-                segmentAngle
+                segmentAngle,
+                segmentData[i].shift
             );
 
             // Calculate center point of the segment
