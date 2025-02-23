@@ -116,7 +116,7 @@ const CurvedLine = ({ startPoint, angle, length = 0.5, color, progress, text }) 
 
 
 class SquareRingGeometry extends THREE.BufferGeometry {
-    constructor(radius = 2, innerRadius = 0.5, thickness = 0.4, segments = 10, startAngle = 0, arcLength, shift = 0, edgeSegments = 10) {
+    constructor(radius = 2, innerRadius = 0.5, thickness = 0.4, segments = 3, startAngle = 0, arcLength, shift = 0, edgeSegments = 3) {
         super();
         
         const vertices = [];
@@ -131,6 +131,16 @@ class SquareRingGeometry extends THREE.BufferGeometry {
         // };
         
         // Create vertices for the detailed cross-section at each segment
+        let topLeft = 0;
+        let topRight = 0;
+        let bottomRight = 0;
+        let bottomLeft = 0;
+
+        let topLeft2 = 0;
+        let topRight2 = 0;
+        let bottomRight2 = 0;
+        let bottomLeft2 = 0;
+
         for (let i = 0; i <= segments; i++) {
             const angle = startAngle + (i * segmentAngle);
             const cos = Math.cos(angle);
@@ -200,8 +210,50 @@ class SquareRingGeometry extends THREE.BufferGeometry {
                             current, next, current + 1,
                             current + 1, next, next + 1
                         );
+                        if(i === 0 && j === 0){
+                            if(e === 0){
+                                topLeft = current;
+                            }
+                            if(e === 1){
+                                topRight = current;
+                            }
+                            if(e === 2){
+                                bottomRight = current;
+                            }
+                            if(e === 3){
+                                bottomLeft = current - 1;
+                            }
+                        }
+                        if(i === segments - 1  && j === 0){
+                            if(e === 0){
+                                topLeft2 = next;
+                            }
+                            if(e === 1){
+                                topRight2 = next;
+                            }
+                            if(e === 2){
+                                bottomRight2 = next;
+                            }
+                            if(e === 3){
+                                bottomLeft2 = next-1;
+                            }
+                        }
                     }
                 }
+            }
+
+            //Create segment closing faces
+            if(i === segments){
+                indices.push(
+                    topRight2, bottomLeft2, topLeft2,
+                    topLeft2, bottomLeft2, bottomRight2,
+                )
+            }
+            if(i === 0){
+                indices.push(
+                    topRight, bottomLeft, topLeft,
+                    topLeft, bottomLeft, bottomRight,
+                )
             }
         }
         
@@ -242,7 +294,7 @@ const ProgressRing = ({
                 radius, 
                 innerRadius,
                 thickness, 
-                100, 
+                50, 
                 startAngle, 
                 segmentAngle,
                 segmentData[i].shift
@@ -298,6 +350,7 @@ const ProgressRing = ({
                         color={segment.color}
                         metalness={0.50}
                         roughness={0.65}
+                        wireframe={false}
                     />
                 </mesh>
             ))}

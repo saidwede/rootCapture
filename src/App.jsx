@@ -12,9 +12,9 @@ import * as THREE from "three";
 import { OrbitControls, Sphere, Line } from '@react-three/drei';
 
 const WorldGlobe = ({ position, args }) => {
-    const texture = useMemo(() => new THREE.TextureLoader().load("/earthmap.jpg"), []);
+    const texture = useMemo(() => new THREE.TextureLoader().load("/map.jpg"), []);
     return (
-      <Sphere args={args} position={position}>
+      <Sphere args={args} position={position} rotation={[-((Math.PI/2) + 0.9), 0, 0]}>
         <meshStandardMaterial map={texture} />
       </Sphere>
     );
@@ -61,8 +61,8 @@ function App() {
                 }}
             >
 
-                <directionalLight position={[3, 6, 3]} intensity={8} castShadow />
-                <ambientLight intensity={1} />
+                <directionalLight position={[3, 6, 3]} intensity={3} castShadow />
+                <ambientLight intensity={5} />
                 <group position={[0, -4.95, -4.97]} rotation={[(Math.PI/2) + 0.9, 0, 0]}>
                     <WorldGlobe args={[4.5, 44, 44]} />
                     <Circle radius={4.7} color="#bb8fdb" opacity={0.04} />
