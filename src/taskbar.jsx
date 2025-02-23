@@ -83,15 +83,15 @@ const Taskbar = ({onClose, onMaximize, onMinimize, text}) => {
 
             {/* User Activity Text */}
             <group position={[0.15, 0, 0]}>
-                <mesh position={[-1.34, 2.5, 0.01]}>
-                    <planeGeometry args={[1.5, 0.28]} />
+                <mesh position={[-1.24, 2.5, 0.01]}>
+                    <planeGeometry args={[1.8, 0.28]} />
                     <meshStandardMaterial color="#19dcdb" transparent={true} />
                 </mesh>
                 <Text
-                    font='/fonts/OWLY.ttf'
+                    font='/fonts/Rajdhani-SemiBold.ttf'
                     fontSize={0.23}
                     backgroundColor="white"
-                    position={[-1.35, 2.5, 0.02]}
+                    position={[-1.23, 2.5, 0.02]}
                     anchorX="center"
                     anchorY="middle"
                 >
