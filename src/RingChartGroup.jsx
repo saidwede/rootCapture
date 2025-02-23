@@ -10,6 +10,7 @@ const RingChartGroup = ({
     segmentData,
     position,
     radius,
+    innerRadius,
     thickness,
     gap
 }) => {
@@ -71,7 +72,7 @@ const RingChartGroup = ({
             </animated.group>
 
             <animated.group scale={ringScale}>
-                <RingChartObject segmentData={segmentData} radius={radius} thickness={thickness} gap={gap}  />
+                <RingChartObject segmentData={segmentData} radius={radius} innerRadius={innerRadius} thickness={thickness} gap={gap}  />
             </animated.group>
         </group>
     );

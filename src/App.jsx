@@ -77,17 +77,24 @@ function App() {
                     position={[-5.5,3.5,0]}
                     title='USER ACTIVITY'
                     segmentData={userActivityData}
-                    radius={1.2}
+                    radius={1.4}
+                    innerRadius={0.6}
+                    thickness={0.4}
                 />
                 <RingChartGroup 
                     position={[5.5,3.5,0]}
                     title='TOTAL USER' 
                     segmentData={totalUserData}
-                    radius={1.4}
+                    radius={1.6}
+                    innerRadius={1.1}
                 />
                 <RingChartGroup 
                     position={[-5.5,-4.5,0]}
                     title='ACTIVE SESSIONS' 
+                    segmentData={userActivityData}
+                    radius={1.4}
+                    innerRadius={0.6}
+                    thickness={0.4}
                 />
 
 

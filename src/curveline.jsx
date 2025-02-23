@@ -78,14 +78,14 @@ export default function MainCurvedLines() {
 
   return (
     <>
-      {/* <mesh position={[-2.1, 2.45, 0]}>
+      <mesh position={[-2.1, 2.45, 0]}>
         <sphereGeometry args={[0.03, 16, 16]} />
         <meshStandardMaterial color="cyan" />
       </mesh>
       <mesh position={[-2.1, -0.35, 0]}>
         <sphereGeometry args={[0.03, 16, 16]} />
         <meshStandardMaterial color="cyan" />
-      </mesh> */}
+      </mesh>
       {/* <mesh position={[-1.5, 0.7, 0]}>
         <sphereGeometry args={[0.03, 16, 16]} />
         <meshStandardMaterial color="cyan" />
@@ -97,14 +97,14 @@ export default function MainCurvedLines() {
       <Line
         points={points}
         color="cyan"
-        lineWidth={2}
+        lineWidth={1}
         geometry={geometry}
         position={[-0.7, -0.35, 0]}
       />
       <Line
         points={points2}
         color="cyan"
-        lineWidth={2}
+        lineWidth={1}
         geometry={geometry2}
         position={[-1.94, -1.04, 0]}
       />

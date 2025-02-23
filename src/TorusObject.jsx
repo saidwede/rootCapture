@@ -116,7 +116,7 @@ const CurvedLine = ({ startPoint, angle, length = 0.5, color, progress, text }) 
 
 
 class SquareRingGeometry extends THREE.BufferGeometry {
-    constructor(radius = 2, thickness = 0.4, segments = 128, progress = 0.6, startAngle = 0, arcLength, edgeSegments = 128) {
+    constructor(radius = 2, innerRadius = 0.5, thickness = 0.4, segments = 10, startAngle = 0, arcLength, edgeSegments = 10) {
         super();
         
         const vertices = [];
@@ -136,9 +136,9 @@ class SquareRingGeometry extends THREE.BufferGeometry {
             const cos = Math.cos(angle);
             const sin = Math.sin(angle);
             
-            const cornerRadius = thickness * 0.1; // Size of rounded corners
-            const innerRadius = radius - thickness/2;
-            const outerRadius = radius + thickness/2;
+            //const cornerRadius = thickness * 0.1; // Size of rounded corners
+            const localInnerRadius = Math.min(radius, innerRadius);
+            const outerRadius = radius;
             
             // Create points for each edge of the cross-section
             const edgePoints = [];
@@ -148,13 +148,13 @@ class SquareRingGeometry extends THREE.BufferGeometry {
                 const startAngle = (edge * Math.PI/2);
                 for (let j = 0; j <= edgeSegments; j++) {
                     const t = j / edgeSegments;
-                    const cornerAngle = startAngle + (Math.PI/2) * t;
+                    // const cornerAngle = startAngle + (Math.PI/2) * t;
                     
                     let point;
                     if (edge === 0) { // Top edge
                         point = [
-                            (innerRadius + thickness * t) * cos,
-                            (innerRadius + thickness * t) * sin,
+                            (localInnerRadius + (outerRadius - localInnerRadius) * t) * cos,
+                            (localInnerRadius + (outerRadius - localInnerRadius) * t) * sin,
                             thickness/2
                         ];
                     } else if (edge === 1) { // Right edge
@@ -165,14 +165,14 @@ class SquareRingGeometry extends THREE.BufferGeometry {
                         ];
                     } else if (edge === 2) { // Bottom edge
                         point = [
-                            (outerRadius - thickness * t) * cos,
-                            (outerRadius - thickness * t) * sin,
+                            (localInnerRadius + (outerRadius - localInnerRadius) * t) * cos,
+                            (localInnerRadius + (outerRadius - localInnerRadius) * t) * sin,
                             -thickness/2
                         ];
                     } else { // Left edge
                         point = [
-                            innerRadius * cos,
-                            innerRadius * sin,
+                            localInnerRadius * cos,
+                            localInnerRadius * sin,
                             -thickness/2 + thickness * t
                         ];
                     }
@@ -214,6 +214,7 @@ class SquareRingGeometry extends THREE.BufferGeometry {
 
 const ProgressRing = ({
     radius = 0.75,
+    innerRadius = 0.5,
     thickness = 0.3,
     segments = 264,
     segmentData = [
@@ -239,9 +240,9 @@ const ProgressRing = ({
         
             const geometry = new SquareRingGeometry(
                 radius, 
+                innerRadius,
                 thickness, 
-                segments, 
-                segmentData[i].progress, 
+                100, 
                 startAngle, 
                 segmentAngle
             );
@@ -249,8 +250,8 @@ const ProgressRing = ({
             // Calculate center point of the segment
             const centerAngle = startAngle + (segmentAngle / 2);
             const centerPoint = new THREE.Vector3(
-                (radius + thickness/2) * Math.cos(centerAngle),
-                (radius + thickness/2) * Math.sin(centerAngle),
+                (radius) * Math.cos(centerAngle),
+                (radius) * Math.sin(centerAngle),
                 0+thickness/2
             );
 
@@ -296,7 +297,6 @@ const ProgressRing = ({
                         color={segment.color}
                         metalness={0.50}
                         roughness={0.65}
-                        wireframe={false}
                     />
                 </mesh>
             ))}
@@ -320,6 +320,7 @@ const ProgressRing = ({
 // Scene Component
 const RingChartObject = ({
     radius = 0.75,
+    innerRadius = 0.5,
     thickness = 0.3,
     segmentData = [
         { progress: 0.4, color: '#8a2be2', text: 'JSX'},
@@ -466,6 +467,7 @@ const RingChartObject = ({
                 segmentData={segmentData}
                 thickness={thickness}
                 radius={radius}
+                innerRadius={innerRadius}
                 gap={gap}
             />
         </group>
