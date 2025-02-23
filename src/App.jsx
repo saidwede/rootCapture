@@ -39,7 +39,6 @@ function App() {
             {/* <TopNavbar /> */}
             <Canvas
                 orthographic
-                style={{ backgroundColor: '#000000' }}
                 camera={{
                     position: [0, 4, 5],
                     fov: 45,

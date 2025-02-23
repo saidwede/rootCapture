@@ -80,7 +80,7 @@ const CurvedLine = ({ startPoint, angle, length = 0.5, color, progress, text }) 
                 </mesh> */}
                 <RoundedRectangle 
                     color={color} 
-                    height={0.7}
+                    height={0.8}
                     width={0.13}
                     radius={0.07}
                 />
@@ -99,8 +99,8 @@ const CurvedLine = ({ startPoint, angle, length = 0.5, color, progress, text }) 
                 <Text
                     position={[0.0, 0.0, 0.014]} // Adjust to place text slightly above
                     rotation={[0, 0, -Math.PI/2]}
-                    fontSize={0.1}
-                    fontWeight={500}
+                    fontSize={0.12}
+                    fontWeight={600}
                     fontFamily={"Inter"}
                     color={"#ffffff"}
                     anchorX="center"
