@@ -57,7 +57,7 @@ function App() {
                     near: 0,
                     //aspect: window.innerWidth / window.innerHeight,
                     far: 1000,
-                    zoom: 70
+                    zoom: 80
                 }}
             >
 
