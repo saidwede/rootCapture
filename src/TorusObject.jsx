@@ -332,7 +332,7 @@ const ProgressRing = ({
     }, [radius, thickness, segments, gap, segmentData]);
 
     useFrame(() => {
-        //groupRef.current.rotation.z = Math.sin(performance.now() * 0.0001);
+        groupRef.current.rotation.z = Math.sin(performance.now() * 0.0001);
     });
   
     return (
