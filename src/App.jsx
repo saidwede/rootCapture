@@ -9,7 +9,7 @@ import Taskbar from './taskbar';
 import TopNavbar from './Navbar';
 import RingChartGroup from './RingChartGroup';
 import * as THREE from "three";
-import { OrbitControls, Sphere } from '@react-three/drei';
+import { OrbitControls, Sphere, Line } from '@react-three/drei';
 
 const WorldGlobe = ({ position, args }) => {
     const texture = useMemo(() => new THREE.TextureLoader().load("/earthmap.jpg"), []);
@@ -19,6 +19,18 @@ const WorldGlobe = ({ position, args }) => {
       </Sphere>
     );
 };
+
+function Circle({ radius = 2, segments = 500, color = "blue", opacity = 1 }) {
+    // Create a path for the circle
+    const path = new THREE.Path();
+    path.absarc(0, 0, radius, 0, Math.PI * 2, false); // Full circle
+  
+    // Get points from the path
+    const points = path.getPoints(segments);
+    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+  
+    return <Line transparent opacity={opacity} points={points} color={color} lineWidth={2} geometry={geometry} />;
+}
 
 function App() {
 
@@ -49,9 +61,18 @@ function App() {
                 }}
             >
 
-                <directionalLight position={[3, 3, 3]} intensity={1} castShadow />
-                <ambientLight intensity={0.1} />
-                <WorldGlobe args={[4.5, 44, 44]} position={[0, -4.95, -4.97]} />
+                <directionalLight position={[3, 6, 3]} intensity={8} castShadow />
+                <ambientLight intensity={1} />
+                <group position={[0, -4.95, -4.97]} rotation={[(Math.PI/2) + 0.9, 0, 0]}>
+                    <WorldGlobe args={[4.5, 44, 44]} />
+                    <Circle radius={4.7} color="#bb8fdb" opacity={0.04} />
+                    <Circle radius={5} color="#bb8fdb" opacity={0.04} />
+                    <Circle radius={5.3} color="#bb8fdb" opacity={0.04} />
+                    <Circle radius={5.6} color="#bb8fdb" opacity={0.04} />
+                    <Circle radius={5.9} color="#ffffff" opacity={0.03} />
+                    <Circle radius={6.2} color="#ffffff" opacity={0.02} />
+                    <Circle radius={6.5} color="#ffffff" opacity={0.01} />
+                </group>
                 <RingChartGroup 
                     position={[-5.5,3.5,0]}
                     title='USER ACTIVITY'

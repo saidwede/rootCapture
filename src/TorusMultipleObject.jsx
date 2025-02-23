@@ -470,9 +470,9 @@ const MultipleScene = () => {
 
     return (
     <>
-        <directionalLight position={[1,2,3]} intensity={4.5}/>
+        {/* <directionalLight position={[1,2,3]} intensity={4.5}/>
         <ambientLight intensity={1.5} />
-        <pointLight position={[10, 10, 10]} intensity={1} />
+        <pointLight position={[10, 10, 10]} intensity={1} /> */}
         <group>
             <MainCurvedLines />
         </group>
