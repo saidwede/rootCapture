@@ -26,7 +26,7 @@ const RoundedRectangle = ({ position, color, width = 0.3, height = 1, radius = 0
     );
   };
 
-const CurvedLine = ({ startPoint, angle, length = 0.5, color, progress, text, thickness=0.3, position }) => {
+const CurvedLine = ({ startPoint, angle, length = 0.5, color, progress, text, textColor='white', position }) => {
     const textAreaRef = useRef()
     const leftAngle = angle > (Math.PI/2) && angle < ((3*Math.PI)/2);
     const bottomAngle = angle > (Math.PI) && angle < (2*Math.PI);
@@ -99,12 +99,12 @@ const CurvedLine = ({ startPoint, angle, length = 0.5, color, progress, text, th
                 </mesh> */}
                 <RoundedRectangle 
                     color={color} 
-                    height={0.8}
+                    height={1}
                     width={0.13}
                     radius={0.07}
                     position={[
                         0,
-                        (leftAngle ? 1 : -1) * 0.4,
+                        (leftAngle ? 1 : -1) * 0.5,
                         0
                     ]}
                 />
@@ -121,12 +121,12 @@ const CurvedLine = ({ startPoint, angle, length = 0.5, color, progress, text, th
                 {/* </TransformControls> */}
                 {/* Text as child, positioned relative to the mesh */}
                 <Text
-                    position={[0.0, (leftAngle ? 1 : -1) * 0.4, 0.014]} // Adjust to place text slightly above
+                    position={[0.01, (leftAngle ? 1 : -1) * 0.5, 0.012]} // Adjust to place text slightly above
                     rotation={[0, 0, -Math.PI/2]}
                     fontSize={0.12}
                     fontWeight={600}
                     fontFamily={"Inter"}
-                    color={"#ffffff"}
+                    color={textColor}
                     anchorX="center"
                     anchorY="middle"
                 >
@@ -140,7 +140,7 @@ const CurvedLine = ({ startPoint, angle, length = 0.5, color, progress, text, th
 
 
 class SquareRingGeometry extends THREE.BufferGeometry {
-    constructor(radius = 2, innerRadius = 0.5, thickness = 0.4, segments = 3, startAngle = 0, arcLength, shift = 0, edgeSegments = 3) {
+    constructor(radius = 2, innerRadius = 0.5, thickness = 0.4, segments = 3, startAngle = 0, arcLength, shift = 0, edgeSegments = 1) {
         super();
         
         const vertices = [];
@@ -298,9 +298,9 @@ const ProgressRing = ({
     ],
     gap = 0.10, // Gap in radians between segments
     position,
-    rotation = [Math.PI/4,0,0]
+    inclinaison = 0
   }) => {
-    const [localRotation, setLocalRotation] = useState(rotation[1]);
+    const [localRotation, setLocalRotation] = useState(0);
     const noOfSegments = segmentData.length;
     const groupRef = useRef();
     
@@ -348,7 +348,8 @@ const ProgressRing = ({
                 angle: centerAngle,
                 color: segmentData[i].color,
                 progress: segmentData[i].progress,
-                text: segmentData[i].text
+                text: segmentData[i].text,
+                textColor: segmentData[i].textColor || 'white'
             });
             
             startAngle += segmentAngle + gap;
@@ -360,14 +361,14 @@ const ProgressRing = ({
     }, [radius, thickness, segments, gap, segmentData]);
 
     useFrame(() => {
-        //setLocalRotation((prev) => Math.sin(performance.now() * 0.0001));
+        setLocalRotation((prev) => Math.sin(performance.now() * 0.0001));
         //groupRef.current.rotation.y = Math.sin(performance.now() * 0.0001);
     });
   
     return (
     
-      <group rotation={[rotation[0], localRotation, rotation[2]]} position={position} ref={groupRef}>
-        <group rotation={[-Math.PI/2,0,0]}>
+      <group rotation={[0, inclinaison, localRotation]} position={position} ref={groupRef}>
+        <group>
             <group>
                 {segmentGeometries.portions.map((segment, index) => (
                     <mesh key={index} geometry={segment.geometry}>
@@ -383,30 +384,34 @@ const ProgressRing = ({
                 ))}
             </group>
             {segmentGeometries.points.map((point, index) => (
-                <group 
+                <group
                     key={index}
                     rotation={[
-                        -rotation[0],
-                        rotation[2] ,
-                        -rotation[1]
+                        0,
+                        0,
+                        -localRotation
                     ]}
-                    position={point.point} 
+                    position={point.point}
                 >
                     <group position={[-point.point.x, -point.point.y, -point.point.z]}>
-                        <CurvedLine
-                            key={`line-${index}`}
-                            startPoint={point.point}
-                            angle={point.angle}
-                            length={0.5}
-                            color={point.color}
-                            progress={point.progress}
-                            text={point.text}
-                            thickness={thickness}
-                        />
+                        <group position={point.point} rotation={[-Math.PI/6,-inclinaison + (inclinaison/7),0]}>
+                            <group position={[-point.point.x, -point.point.y, -point.point.z]}>
+                                <CurvedLine
+                                    key={`line-${index}`}
+                                    startPoint={point.point}
+                                    angle={point.angle}
+                                    length={0.5}
+                                    color={point.color}
+                                    progress={point.progress}
+                                    text={point.text}
+                                    thickness={thickness}
+                                    textColor={point.textColor}
+                                />
+                            </group>
+                        </group>
                     </group>
                     
                 </group>
-                
             ))}
         </group>
       </group>
@@ -425,6 +430,7 @@ const RingChartObject = ({
         { progress: 0.2, color: '#ff4040', text: 'HTML'},
     ],
     gap = 0.10, // Gap in radians between segments
+    inclinaison = 0,
   }) => {
     const ringRef = useRef();
     // const [segmentData, setSegmentData] = useState([
@@ -559,15 +565,17 @@ const RingChartObject = ({
         <group rotation={[0, Math.PI, 0]}>
             <MainCurvedLines />
         </group>
-        <ProgressRing 
-            segmentData={segmentData}
-            thickness={thickness}
-            radius={radius}
-            innerRadius={innerRadius}
-            gap={gap}
-            position={[0, -0.5, 0]} 
-            
-        />
+        <group rotation={[-Math.PI/3,0,0]}>
+            <ProgressRing 
+                segmentData={segmentData}
+                thickness={thickness}
+                radius={radius}
+                innerRadius={innerRadius}
+                gap={gap}
+                position={[0, -0.5, 0]} 
+                inclinaison={inclinaison}
+            />
+        </group>
       </>
     );
 };

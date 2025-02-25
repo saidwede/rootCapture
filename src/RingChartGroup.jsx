@@ -12,33 +12,49 @@ const RingChartGroup = ({
     radius,
     innerRadius,
     thickness,
-    gap
+    gap,
+    inclinaison
 }) => {
+    const [isMinimized, setIsMinimized] = useState(false);
+    const [isClosed, setIsClosed] = useState(false);
+
+    const handleClose = (e) => {
+        e.stopPropagation(); 
+        setRingScale(0);
+    };
+    const handleOpen = () => {
+        setIsClosed(false);
+    }
+
+
+
+
     const [isRingVisible, setIsRingVisible] = useState(true);
     const [taskbarScale, setTaskbarScale] = useState(1);
-    
-    // Animation spring
-    const { ringScale } = useSpring({
-        ringScale: isRingVisible ? taskbarScale : 0,
-        config: { mass: 1, tension: 280, friction: 60 }
-    });
+    const [ringScale, setRingScale] = useState(1)
 
     const { taskbarSpring } = useSpring({
         taskbarSpring: taskbarScale,
         config: { mass: 1, tension: 280, friction: 60 }
     });
 
-
+    const { ringSpring } = useSpring({
+        ringSpring: ringScale, // Toggle between 1 and 2 on click
+        config: { tension: 100, friction: 10 },
+    });
 
     const handleMinimize = () => {
-        if (!isRingVisible) {
-            // If ring is hidden, show it at normal scale
-            setIsRingVisible(true);
-            setTaskbarScale(1);
-        } else {
-            // Minimize both ring and taskbar
-            setTaskbarScale(1);
-        }
+        alert('Minimize')
+        setIsRingVisible(true);
+        setTaskbarScale(1.2);
+        // if (!isRingVisible) {
+        //     // If ring is hidden, show it at normal scale
+        //     setIsRingVisible(true);
+        //     setTaskbarScale(1);
+        // } else {
+        //     // Minimize both ring and taskbar
+        //     setTaskbarScale(1);
+        // }
     };
 
     const handleMaximize = () => {
@@ -53,26 +69,21 @@ const RingChartGroup = ({
         }
     };
 
-    const handleClose = () => {
-        // Hide only the ring, keep taskbar visible
-        setIsRingVisible(false);
-        // Reset taskbar to normal scale
-        setTaskbarScale(1);
-    };
+    
 
     return (
         <group position={position}>
             <animated.group scale={taskbarSpring}>
                 <Taskbar
-                    onClose={() => handleClose()}
+                    onClose={handleClose}
                     onMaximize={() => handleMaximize()}
                     onMinimize={handleMinimize}
                     text={title}
                 />
             </animated.group>
 
-            <animated.group scale={ringScale}>
-                <RingChartObject segmentData={segmentData} radius={radius} innerRadius={innerRadius} thickness={thickness} gap={gap}  />
+            <animated.group scale={ringSpring}  >
+                <RingChartObject segmentData={segmentData} radius={radius} innerRadius={innerRadius} thickness={thickness} gap={gap} inclinaison={inclinaison}  />
             </animated.group>
         </group>
     );

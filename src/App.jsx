@@ -35,11 +35,13 @@ function Circle({ radius = 2, segments = 500, color = "blue", opacity = 1 }) {
 function App() {
 
     const userActivityData = [
-        { progress: 0.25, color: '#59A9A5', text: 'JSX'},
         { progress: 0.1, color: '#B01A27', text: 'CSS', shift: 0.2},
-        { progress: 0.35, color: '#B77417', text: 'HTML',},
-        { progress: 0.2, color: '#9C31C6', text: 'CSS'},
+        { progress: 0.35, color: '#59A9A5', text: 'JSX', textColor: '#000000'},
         { progress: 0.1, color: '#1657AC', text: 'HTML', shift: 0.2},
+        { progress: 0.2, color: '#9C31C6', text: 'CSS'},
+        { progress: 0.25, color: '#B77417', text: 'HTML', textColor: '#000000',},
+        
+        
     ];
     const totalUserData = [
         { progress: 0.6, color: '#8a2be2', text: 'JSX'},
@@ -81,6 +83,7 @@ function App() {
                     innerRadius={0.6}
                     thickness={0.4}
                     gap={0.05}
+                    inclinaison={Math.PI/25}
                 />
                 <RingChartGroup 
                     position={[5.5,2,0]}
@@ -88,6 +91,7 @@ function App() {
                     segmentData={totalUserData}
                     radius={1.6}
                     innerRadius={1.1}
+                    inclinaison={-Math.PI/10}
                 />
                 <RingChartGroup 
                     position={[-5.5,-4.5,0]}
@@ -97,12 +101,12 @@ function App() {
                     innerRadius={0.6}
                     thickness={0.4}
                     gap={0.05}
+                    inclinaison={Math.PI/25}
                 />
 
 
                 {/* Optional: Add controls if you want to interact with the scene */}
                 <OrbitControls />
-                
 
             </Canvas>
         </Router>
