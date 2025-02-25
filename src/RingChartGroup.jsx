@@ -20,64 +20,37 @@ const RingChartGroup = ({
 
     const handleClose = (e) => {
         e.stopPropagation(); 
-        setRingScale(0);
+        setIsClosed(true)
     };
-    const handleOpen = () => {
+    const handleOpen = (e) => {
+        e.stopPropagation(); 
         setIsClosed(false);
     }
+    const handleMinimize = (e) => {
+        e.stopPropagation(); 
+        setIsMinimized(true)
+    };
+    const handleMaximize = (e) => {
+        e.stopPropagation(); 
+        setIsMinimized(false)
+    };
 
 
-
-
-    const [isRingVisible, setIsRingVisible] = useState(true);
-    const [taskbarScale, setTaskbarScale] = useState(1);
     const [ringScale, setRingScale] = useState(1)
 
-    const { taskbarSpring } = useSpring({
-        taskbarSpring: taskbarScale,
-        config: { mass: 1, tension: 280, friction: 60 }
-    });
-
     const { ringSpring } = useSpring({
-        ringSpring: ringScale, // Toggle between 1 and 2 on click
+        ringSpring: isClosed ? 0 : (isMinimized ? 0.5 : 1), 
         config: { tension: 100, friction: 10 },
     });
 
-    const handleMinimize = () => {
-        alert('Minimize')
-        setIsRingVisible(true);
-        setTaskbarScale(1.2);
-        // if (!isRingVisible) {
-        //     // If ring is hidden, show it at normal scale
-        //     setIsRingVisible(true);
-        //     setTaskbarScale(1);
-        // } else {
-        //     // Minimize both ring and taskbar
-        //     setTaskbarScale(1);
-        // }
-    };
-
-    const handleMaximize = () => {
-        if (!isRingVisible) {
-            // If ring is hidden, show it at normal scale
-            setIsRingVisible(true);
-            setTaskbarScale(1);
-        } else {
-
-            // Maximize both ring and taskbar
-            setTaskbarScale(1.5);
-        }
-    };
-
-    
-
     return (
         <group position={position}>
-            <animated.group scale={taskbarSpring}>
+            <animated.group>
                 <Taskbar
                     onClose={handleClose}
-                    onMaximize={() => handleMaximize()}
+                    onMaximize={handleMaximize}
                     onMinimize={handleMinimize}
+                    onOpen={handleOpen}
                     text={title}
                 />
             </animated.group>

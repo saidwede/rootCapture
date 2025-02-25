@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { useLoader } from '@react-three/fiber';
 import { TextureLoader } from 'three';
 import { Html, useTexture, Text, Text3D } from "@react-three/drei";
-const Taskbar = ({onClose, onMaximize, onMinimize, text}) => {
+const Taskbar = ({onClose, onMaximize, onMinimize, onOpen, text}) => {
     const minimizeTexture = useTexture( "/minimize-sign.png"); // Replace with your image path
     const maximizeTexture = useTexture( "/maximize.png"); // Replace with your image path
     const closeTexture = useTexture( "/close.png"); // Replace with your image path
@@ -82,7 +82,12 @@ const Taskbar = ({onClose, onMaximize, onMinimize, text}) => {
             </group>
 
             {/* User Activity Text */}
-            <group position={[0.15, 0, 0]}>
+            <group position={[0.15, 0, 0]}
+                onPointerOver={(e) => {
+                    document.body.style.cursor = 'pointer';
+                }}
+                onClick={onOpen}
+            >
                 <mesh position={[-1.24, 2.5, 0.01]}>
                     <planeGeometry args={[1.8, 0.28]} />
                     <meshStandardMaterial color="#19dcdb" transparent={true} />
