@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { BrowserRouter as useLocation } from 'react-router-dom';
 import { useSpring, animated } from '@react-spring/three';
 import RingChartObject from './TorusObject';
 import Taskbar from './taskbar';
@@ -15,7 +14,7 @@ const RingChartGroup = ({
     gap,
     inclinaison
 }) => {
-    const [isMinimized, setIsMinimized] = useState(false);
+    const [isMinimized, setIsMinimized] = useState(true);
     const [isClosed, setIsClosed] = useState(false);
 
     const handleClose = (e) => {
@@ -27,19 +26,22 @@ const RingChartGroup = ({
         setIsClosed(false);
     }
     const handleMinimize = (e) => {
-        e.stopPropagation(); 
+        e.stopPropagation();
+        if(isClosed){
+            setIsClosed(false);
+        } 
         setIsMinimized(true)
     };
     const handleMaximize = (e) => {
-        e.stopPropagation(); 
+        e.stopPropagation();
+        if(isClosed){
+            setIsClosed(false);
+        } 
         setIsMinimized(false)
     };
 
-
-    const [ringScale, setRingScale] = useState(1)
-
     const { ringSpring } = useSpring({
-        ringSpring: isClosed ? 0 : (isMinimized ? 0.5 : 1), 
+        ringSpring: isClosed ? 0 : (isMinimized ? 1 : 1.5), 
         config: { tension: 100, friction: 10 },
     });
 

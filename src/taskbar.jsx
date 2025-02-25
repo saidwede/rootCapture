@@ -1,7 +1,5 @@
 import * as THREE from 'three';
-import { useLoader } from '@react-three/fiber';
-import { TextureLoader } from 'three';
-import { Html, useTexture, Text, Text3D } from "@react-three/drei";
+import { useTexture, Text } from "@react-three/drei";
 const Taskbar = ({onClose, onMaximize, onMinimize, onOpen, text}) => {
     const minimizeTexture = useTexture( "/minimize-sign.png"); // Replace with your image path
     const maximizeTexture = useTexture( "/maximize.png"); // Replace with your image path

@@ -1,20 +1,21 @@
-import { useState, useRef, useMemo } from 'react'
+import { useRef, useMemo } from 'react'
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import './App.css'
-import { Canvas } from '@react-three/fiber';
-import { useSpring, animated } from '@react-spring/three';
-import MultipleScene from './TorusMultipleObject';
-import RingChartObject from './TorusObject';
-import Taskbar from './taskbar';
-import TopNavbar from './Navbar';
+import { Canvas, useFrame } from '@react-three/fiber';
 import RingChartGroup from './RingChartGroup';
 import * as THREE from "three";
 import { OrbitControls, Sphere, Line } from '@react-three/drei';
 
 const WorldGlobe = ({ position, args }) => {
     const texture = useMemo(() => new THREE.TextureLoader().load("/map.jpg"), []);
+    const globeRef = useRef();
+    useFrame(() => {
+        if (globeRef.current) {
+          globeRef.current.rotation.y += 0.005; // Rotate slowly on Y-axis
+        }
+    });
     return (
-      <Sphere args={args} position={position} rotation={[-((Math.PI/2) + 0.9), 0, 0]}>
+      <Sphere args={args} position={position} ref={globeRef}>
         <meshStandardMaterial map={texture} />
       </Sphere>
     );
@@ -101,7 +102,7 @@ function App() {
                     innerRadius={0.6}
                     thickness={0.4}
                     gap={0.05}
-                    inclinaison={Math.PI/25}
+                    inclinaison={Math.PI/4}
                 />
 
 
