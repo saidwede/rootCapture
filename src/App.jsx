@@ -107,7 +107,7 @@ function App() {
 
 
                 {/* Optional: Add controls if you want to interact with the scene */}
-                <OrbitControls />
+                {/* <OrbitControls /> */}
 
             </Canvas>
         </Router>
