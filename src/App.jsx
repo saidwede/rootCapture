@@ -52,18 +52,18 @@ function App() {
             <Canvas
                 orthographic
                 camera={{
-                    position: [0, 4, 5],
+                    position: [0, 0, 5],
                     fov: 45,
                     near: 0,
                     //aspect: window.innerWidth / window.innerHeight,
                     far: 1000,
-                    zoom: 80
+                    zoom: 75
                 }}
             >
 
                 <directionalLight position={[3, 6, 3]} intensity={3} castShadow />
                 <ambientLight intensity={5} />
-                <group position={[0, -4.95, -4.97]} rotation={[(Math.PI/2) + 0.9, 0, 0]}>
+                <group position={[0, 0, -4.97]} rotation={[0, 0, 0]}>
                     <WorldGlobe args={[4.5, 44, 44]} />
                     <Circle radius={4.7} color="#bb8fdb" opacity={0.04} />
                     <Circle radius={5} color="#bb8fdb" opacity={0.04} />
@@ -74,7 +74,7 @@ function App() {
                     <Circle radius={6.5} color="#ffffff" opacity={0.01} />
                 </group>
                 <RingChartGroup 
-                    position={[-5.5,3.5,0]}
+                    position={[-5.5,2,0]}
                     title='USER ACTIVITY'
                     segmentData={userActivityData}
                     radius={1.4}
@@ -83,7 +83,7 @@ function App() {
                     gap={0.05}
                 />
                 <RingChartGroup 
-                    position={[5.5,3.5,0]}
+                    position={[5.5,2,0]}
                     title='TOTAL USER' 
                     segmentData={totalUserData}
                     radius={1.6}

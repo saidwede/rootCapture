@@ -34,11 +34,11 @@ const createRoundedRectangle2 = (width, height) => {
 };
 
 export default function MainCurvedLines() {
-  const path = createRoundedRectangle(2, 1.40, 0.3);
+  const path = createRoundedRectangle(2, 1.30, 0.3);
   const points = path.getPoints();
   const geometry = new THREE.BufferGeometry().setFromPoints(points);
 
-  const path2 = createRoundedRectangle2(0.06, 0.68, 0.3);
+  const path2 = createRoundedRectangle2(0.06, 0.58, 0.3);
   const points2 = path2.getPoints();
   const geometry2 = new THREE.BufferGeometry().setFromPoints(points2);
 
@@ -82,7 +82,7 @@ export default function MainCurvedLines() {
         <sphereGeometry args={[0.03, 16, 16]} />
         <meshStandardMaterial color="cyan" />
       </mesh>
-      <mesh position={[-2.1, -0.35, 0]}>
+      <mesh position={[-2.1, -0.15, 0]}>
         <sphereGeometry args={[0.03, 16, 16]} />
         <meshStandardMaterial color="cyan" />
       </mesh>
@@ -99,14 +99,14 @@ export default function MainCurvedLines() {
         color="cyan"
         lineWidth={1}
         geometry={geometry}
-        position={[-0.7, -0.35, 0]}
+        position={[-0.7, -0.15, 0]}
       />
       <Line
         points={points2}
         color="cyan"
         lineWidth={1}
         geometry={geometry2}
-        position={[-1.94, -1.04, 0]}
+        position={[-1.94, -0.77, 0]}
       />
     </>
   );
