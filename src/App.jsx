@@ -1,37 +1,16 @@
-import { useRef, useMemo } from 'react'
+import { useRef, useMemo, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import './App.css'
 import { Canvas, useFrame } from '@react-three/fiber';
 import RingChartGroup from './RingChartGroup';
 import * as THREE from "three";
 import { OrbitControls, Sphere, Line } from '@react-three/drei';
+import WorldGlobe from './WorldGlobe';
 
-const WorldGlobe = ({ position, args }) => {
-    const texture = useMemo(() => new THREE.TextureLoader().load("/map.jpg"), []);
-    const globeRef = useRef();
-    useFrame(() => {
-        if (globeRef.current) {
-          globeRef.current.rotation.y += 0.005; // Rotate slowly on Y-axis
-        }
-    });
-    return (
-      <Sphere args={args} position={position} ref={globeRef}>
-        <meshStandardMaterial map={texture} />
-      </Sphere>
-    );
-};
 
-function Circle({ radius = 2, segments = 500, color = "blue", opacity = 1 }) {
-    // Create a path for the circle
-    const path = new THREE.Path();
-    path.absarc(0, 0, radius, 0, Math.PI * 2, false); // Full circle
-  
-    // Get points from the path
-    const points = path.getPoints(segments);
-    const geometry = new THREE.BufferGeometry().setFromPoints(points);
-  
-    return <Line transparent opacity={opacity} points={points} color={color} lineWidth={2} geometry={geometry} />;
-}
+
+
+
 
 function App() {
 
@@ -68,13 +47,6 @@ function App() {
                 <ambientLight intensity={5} />
                 <group position={[0, -0.1, -6.97]} rotation={[0, 0, 0]}>
                     <WorldGlobe args={[3.7, 44, 44]} />
-                    <Circle radius={3.85} color="#bb8fdb" opacity={0.04} />
-                    <Circle radius={4.15} color="#bb8fdb" opacity={0.04} />
-                    <Circle radius={4.45} color="#bb8fdb" opacity={0.04} />
-                    <Circle radius={4.75} color="#bb8fdb" opacity={0.04} />
-                    <Circle radius={5.05} color="#ffffff" opacity={0.03} />
-                    <Circle radius={5.35} color="#ffffff" opacity={0.02} />
-                    <Circle radius={5.65} color="#ffffff" opacity={0.01} />
                 </group>
                 <RingChartGroup 
                     position={[-5.5,3,0]}
@@ -107,11 +79,8 @@ function App() {
                     inclinaison={Math.PI/4}
                     delay={2200}
                 />
-
-
                 {/* Optional: Add controls if you want to interact with the scene */}
                 <OrbitControls />
-
             </Canvas>
         </Router>
     )
