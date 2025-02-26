@@ -1,6 +1,8 @@
 import { QuadraticBezierLine } from "@react-three/drei";
+import { useFrame } from '@react-three/fiber';
+import { useState, useEffect } from "react";
 
-function LargeBacket ({width, height, radius, lineWidth = 1.5, position=[0,0,0], color='white'}) {
+function LargeBacket ({width, height, radius, lineWidth = 1.5, position=[0,0,0], color='white', opacity=1}) {
   const w = width;
   const h = height;
   const r = Math.min(radius, w, h);
@@ -12,6 +14,8 @@ function LargeBacket ({width, height, radius, lineWidth = 1.5, position=[0,0,0],
         color={color}
         lineWidth={lineWidth}
         dashed={false}
+        transparent
+        opacity={opacity}
       />
       <QuadraticBezierLine
         start={[-w + r, h + h, 0]}
@@ -20,6 +24,8 @@ function LargeBacket ({width, height, radius, lineWidth = 1.5, position=[0,0,0],
         color={color}
         lineWidth={lineWidth}
         dashed={false}
+        transparent
+        opacity={opacity}
       />
       <QuadraticBezierLine
         start={[-w, h - r + h, 0]}
@@ -27,6 +33,8 @@ function LargeBacket ({width, height, radius, lineWidth = 1.5, position=[0,0,0],
         color={color}
         lineWidth={lineWidth}
         dashed={false}
+        transparent
+        opacity={opacity}
       />
       <QuadraticBezierLine
         start={[-w, -h + r + h, 0]}
@@ -35,6 +43,8 @@ function LargeBacket ({width, height, radius, lineWidth = 1.5, position=[0,0,0],
         color={color}
         lineWidth={lineWidth}
         dashed={false}
+        transparent
+        opacity={opacity}
       />
       <QuadraticBezierLine
         start={[-w + r, -h + h, 0]}
@@ -42,11 +52,13 @@ function LargeBacket ({width, height, radius, lineWidth = 1.5, position=[0,0,0],
         color={color}
         lineWidth={lineWidth}
         dashed={false}
+        transparent
+        opacity={opacity}
       />
     </group>
   )
 }
-function SmallBacket ({width, height, lineWidth = 1.5, position=[0,0,0], color='white'}) {
+function SmallBacket ({width, height, lineWidth = 1.5, position=[0,0,0], color='white', opacity=1}) {
   const w = width;
   const h = height;
 
@@ -58,6 +70,8 @@ function SmallBacket ({width, height, lineWidth = 1.5, position=[0,0,0], color='
         color={color}
         lineWidth={lineWidth}
         dashed={false}
+        transparent
+        opacity={opacity}
       />
       <QuadraticBezierLine
         start={[-w, h + h, 0]}
@@ -66,6 +80,8 @@ function SmallBacket ({width, height, lineWidth = 1.5, position=[0,0,0], color='
         color={color}
         lineWidth={lineWidth}
         dashed={false}
+        transparent
+        opacity={opacity}
       />
       <QuadraticBezierLine
         start={[-w, -h + h, 0, 0]}
@@ -73,21 +89,43 @@ function SmallBacket ({width, height, lineWidth = 1.5, position=[0,0,0], color='
         color={color}
         lineWidth={lineWidth}
         dashed={false}
+        transparent
+        opacity={opacity}
       />
     </group>
   )
 }
 
-export default function MainCurvedLines() {
+export default function MainCurvedLines({delay=0}) {
+      const [blinks, setBlinks] = useState(0);
+      const [opacity, setOpacity] = useState(0);
+      const [timer, setTimer] = useState(0);
+      const maxBlinks = 15; // Number of blinks
+      const blinkSpeed = 0.1; // Speed of fading
+
+      const [visible, setVisible] = useState(false);
+      
+      useEffect(() => {
+          const timer = setTimeout(() => setVisible(true), delay);
+          return () => clearTimeout(timer);
+      }, [delay]);
+  
+      useFrame(() => {
+        if(visible){
+          setOpacity(1);
+        }else{
+          setOpacity(0);
+        }
+      });
   return (
     <>
       <mesh position={[-2.15, 2.45, 0]}>
         <sphereGeometry args={[0.03, 16, 16]} />
-        <meshStandardMaterial color="cyan" />
+        <meshStandardMaterial color="cyan" transparent opacity={opacity} />
       </mesh>
       <mesh position={[-2.15, -0.15, 0]}>
         <sphereGeometry args={[0.03, 16, 16]} />
-        <meshStandardMaterial color="cyan" />
+        <meshStandardMaterial color="cyan" transparent opacity={opacity} />
       </mesh>
       <SmallBacket
         width={.07}
@@ -95,6 +133,7 @@ export default function MainCurvedLines() {
         color="cyan"
         lineWidth={1}
         position={[-1.94, -0.77, 0]}
+        opacity={opacity}
       />
       <LargeBacket
         width={1.30}
@@ -103,6 +142,7 @@ export default function MainCurvedLines() {
         position={[-1.50, -0.15, 0]}
         color="cyan"
         lineWidth={1}
+        opacity={opacity}
       />
     </>
   );

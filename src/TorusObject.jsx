@@ -1,10 +1,11 @@
 import * as THREE from 'three';
 import { useFrame } from '@react-three/fiber';
-import { useMemo, useState, useRef } from 'react';
+import { useMemo, useState, useRef, useEffect } from 'react';
 import { QuadraticBezierLine,Text} from '@react-three/drei';
+import { useSpring, animated } from '@react-spring/three';
 import MainCurvedLines from './curveline';
 
-const RoundedRectangle = ({ position, color, width = 0.3, height = 1, radius = 0.1 }) => {
+const RoundedRectangle = ({ position, color, width = 0.3, height = 1, radius = 0.1, opacity=1 }) => {
     const shape = new THREE.Shape();
   
     shape.moveTo(-width / 2 + radius, -height / 2);
@@ -20,12 +21,15 @@ const RoundedRectangle = ({ position, color, width = 0.3, height = 1, radius = 0
     return (
       <mesh position={position}>
         <shapeGeometry args={[shape]} />
-        <meshStandardMaterial color={color} />
+        <meshStandardMaterial color={color}
+            transparent
+            opacity={opacity}
+        />
       </mesh>
     );
-  };
+};
 
-const CurvedLine = ({ startPoint, angle, length = 0.5, color, progress, text, textColor='white', position }) => {
+const CurvedLine = ({ startPoint, angle, length = 0.5, color, progress, text, textColor='white', position, opacity=1 }) => {
     const textAreaRef = useRef()
     const leftAngle = angle > (Math.PI/2) && angle < ((3*Math.PI)/2);
     const bottomAngle = angle > (Math.PI) && angle < (2*Math.PI);
@@ -65,7 +69,10 @@ const CurvedLine = ({ startPoint, angle, length = 0.5, color, progress, text, te
         <group rotation={[0,0,0]} position={position}>
             <mesh position={points.start}>
                 <sphereGeometry args={[0.03, 16, 16]} />
-                <meshStandardMaterial color={color} />
+                <meshStandardMaterial color={color}
+                    transparent
+                    opacity={opacity}
+                />
             </mesh>
             <QuadraticBezierLine
                 start={points.start}
@@ -74,6 +81,8 @@ const CurvedLine = ({ startPoint, angle, length = 0.5, color, progress, text, te
                 color={color}
                 lineWidth={1.5}
                 dashed={false}
+                transparent
+                opacity={opacity}
             />
             <QuadraticBezierLine
                 start={points.end}
@@ -81,6 +90,8 @@ const CurvedLine = ({ startPoint, angle, length = 0.5, color, progress, text, te
                 color={color}
                 lineWidth={1.5}
                 dashed={false}
+                transparent
+                opacity={opacity}
             />
             
             {/* Group mesh and text together */}
@@ -95,6 +106,7 @@ const CurvedLine = ({ startPoint, angle, length = 0.5, color, progress, text, te
                         (leftAngle ? 1 : -1) * 0.5,
                         0
                     ]}
+                    opacity={opacity}
                 />
                 <Text
                     position={[0.01, (leftAngle ? 1 : -1) * 0.5, 0.012]} // Adjust to place text slightly above
@@ -102,11 +114,15 @@ const CurvedLine = ({ startPoint, angle, length = 0.5, color, progress, text, te
                     fontSize={0.12}
                     fontWeight={600}
                     fontFamily={"Inter"}
-                    color={textColor}
                     anchorX="center"
                     anchorY="middle"
                 >
                     {progress*100}% {text}
+                    <meshPhysicalMaterial
+                        color={textColor}
+                        transparent={true}
+                        opacity={opacity}
+                    />
                 </Text>
             </group>
         </group>
@@ -267,9 +283,10 @@ const ProgressRing = ({
     ],
     gap = 0.10, // Gap in radians between segments
     position,
-    inclinaison = 0
+    inclinaison = 0,
+    delay=0
   }) => {
-    const [localRotation, setLocalRotation] = useState(0);
+    const [localRotation, setLocalRotation] = useState(Math.sin(performance.now() * 0.0001));
     const noOfSegments = segmentData.length;
     const groupRef = useRef();
     
@@ -329,10 +346,43 @@ const ProgressRing = ({
         };
     }, [radius, thickness, segments, gap, segmentData]);
 
+    const [blinks, setBlinks] = useState(0);
+    const [opacity, setOpacity] = useState(0);
+    const [timer, setTimer] = useState(0);
+    const maxBlinks = 4; // Number of blinks
+    const blinkSpeed = 0.05; // Speed of fading
+
+    const [visible, setVisible] = useState(false);
+      
+    useEffect(() => {
+        const timer = setTimeout(() => setVisible(true), delay);
+        return () => clearTimeout(timer);
+    }, [delay]);
+
     useFrame(() => {
-        setLocalRotation((prev) => Math.sin(performance.now() * 0.0001));
+        if(visible){
+            if (blinks < maxBlinks) {
+                if (timer < 30 * blinkSpeed && timer > 0 * blinkSpeed){
+                    setOpacity(0);
+                }else{
+                    setOpacity(0.2);
+                    setBlinks((prev) => prev + 1);
+                }
+                setTimer((prev) => {
+                    if(prev >= 60 * blinkSpeed){
+                        return 0;
+                    }else{
+                        return prev+1;
+                    }
+                });
+            }else{
+                setOpacity(1);
+            }
+        }
+        if (blinks >= maxBlinks){
+            setLocalRotation((prev) => Math.sin(performance.now() * 0.0001));
+        }
     });
-  
     return (
     
       <group rotation={[0, inclinaison, localRotation]} position={position} ref={groupRef}>
@@ -343,9 +393,11 @@ const ProgressRing = ({
                         <meshStandardMaterial
                             side={THREE.DoubleSide}
                             color={segment.color}
-                            metalness={0.50}
-                            roughness={0.65}
+                            metalness={0.7}
+                            roughness={0.7}
                             wireframe={false}
+                            transparent
+                            opacity={opacity}
                         />
                     </mesh>
                 ))}
@@ -373,11 +425,11 @@ const ProgressRing = ({
                                     text={point.text}
                                     thickness={thickness}
                                     textColor={point.textColor}
+                                    opacity={opacity}
                                 />
                             </group>
                         </group>
                     </group>
-                    
                 </group>
             ))}
         </group>
@@ -398,16 +450,23 @@ const RingChartObject = ({
     ],
     gap = 0.10, // Gap in radians between segments
     inclinaison = 0,
+    zoomed = false,
+    delay=0
   }) => {
+
+    const { ringSpring } = useSpring({
+        ringSpring: zoomed ? 1.5 : 1, 
+        config: { tension: 100, friction: 10 },
+    });
     return (
       <>
-        <group>
-            <MainCurvedLines />
+        <group position={[0, 0, -1]}>
+            <MainCurvedLines delay={delay+400} />
         </group>
-        <group rotation={[0, Math.PI, 0]}>
-            <MainCurvedLines />
+        <group position={[0, 0, -1]} rotation={[0, Math.PI, 0]}>
+            <MainCurvedLines delay={delay+400} />
         </group>
-        <group rotation={[-Math.PI/3,0,0]}>
+        <animated.group rotation={[-Math.PI/3,0,0]} scale={ringSpring}>
             <ProgressRing 
                 segmentData={segmentData}
                 thickness={thickness}
@@ -416,8 +475,9 @@ const RingChartObject = ({
                 gap={gap}
                 position={[0, -0.5, 0]} 
                 inclinaison={inclinaison}
+                delay={delay+500}
             />
-        </group>
+        </animated.group>
       </>
     );
 };

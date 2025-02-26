@@ -66,18 +66,18 @@ function App() {
 
                 <directionalLight position={[3, 6, 3]} intensity={3} castShadow />
                 <ambientLight intensity={5} />
-                <group position={[0, 0, -4.97]} rotation={[0, 0, 0]}>
-                    <WorldGlobe args={[4.5, 44, 44]} />
-                    <Circle radius={4.7} color="#bb8fdb" opacity={0.04} />
-                    <Circle radius={5} color="#bb8fdb" opacity={0.04} />
-                    <Circle radius={5.3} color="#bb8fdb" opacity={0.04} />
-                    <Circle radius={5.6} color="#bb8fdb" opacity={0.04} />
-                    <Circle radius={5.9} color="#ffffff" opacity={0.03} />
-                    <Circle radius={6.2} color="#ffffff" opacity={0.02} />
-                    <Circle radius={6.5} color="#ffffff" opacity={0.01} />
+                <group position={[0, -0.1, -6.97]} rotation={[0, 0, 0]}>
+                    <WorldGlobe args={[3.7, 44, 44]} />
+                    <Circle radius={3.85} color="#bb8fdb" opacity={0.04} />
+                    <Circle radius={4.15} color="#bb8fdb" opacity={0.04} />
+                    <Circle radius={4.45} color="#bb8fdb" opacity={0.04} />
+                    <Circle radius={4.75} color="#bb8fdb" opacity={0.04} />
+                    <Circle radius={5.05} color="#ffffff" opacity={0.03} />
+                    <Circle radius={5.35} color="#ffffff" opacity={0.02} />
+                    <Circle radius={5.65} color="#ffffff" opacity={0.01} />
                 </group>
                 <RingChartGroup 
-                    position={[-5.5,2,0]}
+                    position={[-5.5,3,0]}
                     title='USER ACTIVITY'
                     segmentData={userActivityData}
                     radius={1.4}
@@ -85,17 +85,19 @@ function App() {
                     thickness={0.4}
                     gap={0.05}
                     inclinaison={Math.PI/25}
+                    delay={500}
                 />
                 <RingChartGroup 
-                    position={[5.5,2,0]}
+                    position={[5.5,3,0]}
                     title='TOTAL USER' 
                     segmentData={totalUserData}
                     radius={1.6}
                     innerRadius={1.1}
                     inclinaison={-Math.PI/10}
+                    delay={1200}
                 />
                 <RingChartGroup 
-                    position={[-5.5,-4.5,0]}
+                    position={[-5.5,-3.5,0]}
                     title='ACTIVE SESSIONS' 
                     segmentData={userActivityData}
                     radius={1.4}
@@ -103,11 +105,12 @@ function App() {
                     thickness={0.4}
                     gap={0.05}
                     inclinaison={Math.PI/4}
+                    delay={2200}
                 />
 
 
                 {/* Optional: Add controls if you want to interact with the scene */}
-                {/* <OrbitControls /> */}
+                <OrbitControls />
 
             </Canvas>
         </Router>

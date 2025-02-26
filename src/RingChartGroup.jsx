@@ -12,7 +12,8 @@ const RingChartGroup = ({
     innerRadius,
     thickness,
     gap,
-    inclinaison
+    inclinaison,
+    delay = 0
 }) => {
     const [isMinimized, setIsMinimized] = useState(true);
     const [isClosed, setIsClosed] = useState(false);
@@ -41,24 +42,25 @@ const RingChartGroup = ({
     };
 
     const { ringSpring } = useSpring({
-        ringSpring: isClosed ? 0 : (isMinimized ? 1 : 1.5), 
+        ringSpring: isClosed ? 0 : 1, 
         config: { tension: 100, friction: 10 },
     });
 
     return (
         <group position={position}>
-            <animated.group>
+            <animated.group position={[0,-0.05,-1]}>
                 <Taskbar
                     onClose={handleClose}
                     onMaximize={handleMaximize}
                     onMinimize={handleMinimize}
                     onOpen={handleOpen}
                     text={title}
+                    delay={delay}
                 />
             </animated.group>
 
             <animated.group scale={ringSpring}  >
-                <RingChartObject segmentData={segmentData} radius={radius} innerRadius={innerRadius} thickness={thickness} gap={gap} inclinaison={inclinaison}  />
+                <RingChartObject delay={delay}  zoomed={!isMinimized} segmentData={segmentData} radius={radius} innerRadius={innerRadius} thickness={thickness} gap={gap} inclinaison={inclinaison}  />
             </animated.group>
         </group>
     );
