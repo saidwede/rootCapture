@@ -1,10 +1,7 @@
-import { useRef, useMemo, useState } from 'react'
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import './App.css'
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas } from '@react-three/fiber';
 import RingChartGroup from './RingChartGroup';
-import * as THREE from "three";
-import { OrbitControls, Sphere, Line } from '@react-three/drei';
 import WorldGlobe from './WorldGlobe';
 
 
@@ -80,7 +77,7 @@ function App() {
                     delay={2200}
                 />
                 {/* Optional: Add controls if you want to interact with the scene */}
-                <OrbitControls />
+                {/* <OrbitControls /> */}
             </Canvas>
         </Router>
     )

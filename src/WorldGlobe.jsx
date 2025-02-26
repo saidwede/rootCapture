@@ -1,19 +1,42 @@
-import { useRef, useMemo, useState } from 'react'
+import { useRef, useMemo, useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import './App.css'
 import { Canvas, useFrame } from '@react-three/fiber';
 import RingChartGroup from './RingChartGroup';
 import * as THREE from "three";
 import { OrbitControls, Sphere, Line } from '@react-three/drei';
+import { useDrag } from "@use-gesture/react";
 
 const WorldGlobe = ({ position, args }) => {
+  
     const texture = useMemo(() => new THREE.TextureLoader().load("/map.jpg"), []);
     const globeRef = useRef();
+    const [isDragging, setIsDragging] = useState(false);
+    
     useFrame(() => {
-        if (globeRef.current) {
+        if (globeRef.current && !isDragging) {
           globeRef.current.rotation.y += 0.005; // Rotate slowly on Y-axis
         }
     });
+
+    const bind = useDrag(({ movement: [x], down }) => {
+      //setIsDragging(down);
+      if (globeRef.current) {
+        globeRef.current.rotation.y += x * 0.0002;
+      }
+    });
+
+    useEffect(() => {
+      const handleScroll = (event) => {
+        if (globeRef.current) {
+          globeRef.current.rotation.y += event.deltaY * 0.001;
+        }
+      };
+  
+      window.addEventListener("wheel", handleScroll);
+      return () => window.removeEventListener("wheel", handleScroll);
+    }, []);
+
     const radioWaveCoords = [
       { lat: 6.367, lng: 2.433 }, // Cotonou, Benin
       { lat: 37.7749, lng: -122.4194 }, // San Francisco
@@ -23,7 +46,7 @@ const WorldGlobe = ({ position, args }) => {
 
     return (
       <group>
-        <group ref={globeRef}>
+        <group ref={globeRef} {...bind()}>
           <Sphere args={args} position={position}>
             <meshStandardMaterial map={texture} />
           </Sphere>
@@ -118,7 +141,6 @@ function RadioWave({position, args=[0.75, 1, 64], rotation}) {
               <meshBasicMaterial color="#13ba5b" transparent opacity={wave.opacity - 0.5} side={2} />
             </mesh>
           </group>
-          
         ))}
       </group>
     );
