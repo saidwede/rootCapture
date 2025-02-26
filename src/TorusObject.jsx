@@ -455,7 +455,7 @@ const RingChartObject = ({
   }) => {
 
     const { ringSpring } = useSpring({
-        ringSpring: zoomed ? 1.5 : 1, 
+        ringSpring: zoomed ? 1.15 : 1, 
         config: { tension: 100, friction: 10 },
     });
     return (
