@@ -3,6 +3,7 @@ import './App.css'
 import { Canvas } from '@react-three/fiber';
 import RingChartGroup from './RingChartGroup';
 import WorldGlobe from './WorldGlobe';
+import Background from './Background';
 
 
 
@@ -27,7 +28,7 @@ function App() {
     // Adding bg color 
     return (
         <Router>
-            {/* <TopNavbar /> */}
+            <Background />
             <Canvas
                 orthographic
                 camera={{

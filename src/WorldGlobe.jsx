@@ -55,13 +55,13 @@ const WorldGlobe = ({ position, args }) => {
             <RadioWave key={index} position={latLngToCartesian(coord.lat, coord.lng, args[0])} rotation={computeRotation(coord.lat, coord.lng)} />
           ))}
         </group>
-        <Circle radius={3.85} color="#bb8fdb" opacity={0.04} />
+        {/* <Circle radius={3.85} color="#bb8fdb" opacity={0.04} />
         <Circle radius={4.15} color="#bb8fdb" opacity={0.04} />
         <Circle radius={4.45} color="#bb8fdb" opacity={0.04} />
         <Circle radius={4.75} color="#bb8fdb" opacity={0.04} />
         <Circle radius={5.05} color="#ffffff" opacity={0.03} />
         <Circle radius={5.35} color="#ffffff" opacity={0.02} />
-        <Circle radius={5.65} color="#ffffff" opacity={0.01} />
+        <Circle radius={5.65} color="#ffffff" opacity={0.01} /> */}
       </group>
     );
 };
