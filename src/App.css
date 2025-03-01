@@ -70,8 +70,8 @@ body > * {
 .halo{
   box-shadow:0 0 200px #2f78ff;
   position: absolute;
-  height: 500px;
-  width: 500px;
+  height: 30vw;
+  width: 30vw;
   border-radius: 50%;
   top: 50%;
   left: 50%;

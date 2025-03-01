@@ -33,12 +33,12 @@ function App() {
                 orthographic
                 camera={{
                     position: [0, 0, 5],
-                    fov: 45,
-                    near: 0,
-                    //aspect: window.innerWidth / window.innerHeight,
-                    far: 1000,
-                    zoom: 75
+                    //fov: 45,
+                    //near: 0,
+                    //far: 1000,
+                    zoom: window.innerWidth*0.045
                 }}
+                // aspect= {window.innerWidth / window.innerHeight}
             >
 
                 <directionalLight position={[3, 6, 3]} intensity={3} castShadow />
