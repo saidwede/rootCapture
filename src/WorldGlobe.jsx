@@ -121,8 +121,8 @@ function RadioWave({position, args=[0.75, 1, 64], rotation}) {
         waves
           .map((wave) => ({
             ...wave,
-            scale: wave.scale + 0.01,
-            opacity: Math.max(wave.opacity - 0.02, 0),
+            scale: wave.scale + 0.5,
+            opacity: Math.max(wave.opacity - 0.5, 0),
           }))
           .filter((wave) => wave.opacity > 0) // Remove fully faded waves
       );
@@ -134,11 +134,11 @@ function RadioWave({position, args=[0.75, 1, 64], rotation}) {
           <group key={index}>
             <mesh scale={[wave.scale, wave.scale, 1]}>
              <ringGeometry args={args} /> 
-              <meshBasicMaterial color="#13ba5b" transparent opacity={wave.opacity} side={2} />
+              <meshBasicMaterial color="#00ff6e" transparent opacity={wave.opacity} side={2} />
             </mesh>
             <mesh scale={[1.2*wave.scale, 1.2*wave.scale, 1]}>
              <ringGeometry args={[2*args[1] - 0.05, 2*args[1], 2*args[2]]} /> 
-              <meshBasicMaterial color="#13ba5b" transparent opacity={wave.opacity - 0.5} side={2} />
+              <meshBasicMaterial color="#00ff6e" transparent opacity={wave.opacity - 0.5} side={2} />
             </mesh>
           </group>
         ))}

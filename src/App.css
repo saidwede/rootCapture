@@ -29,6 +29,7 @@ body{
   position: absolute;
   z-index: -1;
   overflow: hidden;
+  color: #00ff6e;
 }
 body > * {
   height: 100%;
