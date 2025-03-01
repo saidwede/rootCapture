@@ -451,8 +451,15 @@ const RingChartObject = ({
     gap = 0.10, // Gap in radians between segments
     inclinaison = 0,
     zoomed = false,
-    delay=0
+    delay=0,
+    text=''
   }) => {
+    const [visible, setVisible] = useState(false);
+      
+    useEffect(() => {
+        const timer = setTimeout(() => setVisible(true), delay+700);
+        return () => clearTimeout(timer);
+    }, [delay]);
 
     const { ringSpring } = useSpring({
         ringSpring: zoomed ? 1.15 : 1, 
@@ -460,6 +467,19 @@ const RingChartObject = ({
     });
     return (
       <>
+        <Text
+            font='/fonts/Rajdhani-Bold.ttf'
+            fontSize={0.4}
+            position={[0, -0.25, 0]}
+            anchorX="center"
+            anchorY="middle"
+        >{text}
+            <meshPhysicalMaterial
+                color='cyan'
+                transparent={true}
+                opacity={visible ? 1 : 0}
+            />
+        </Text>
         <group position={[0, 0, -1]}>
             <MainCurvedLines delay={delay+400} />
         </group>

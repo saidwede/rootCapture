@@ -13,7 +13,8 @@ const RingChartGroup = ({
     thickness,
     gap,
     inclinaison,
-    delay = 0
+    delay = 0,
+    text=''
 }) => {
     const [isMinimized, setIsMinimized] = useState(true);
     const [isClosed, setIsClosed] = useState(false);
@@ -60,7 +61,7 @@ const RingChartGroup = ({
             </animated.group>
 
             <animated.group scale={ringSpring}  >
-                <RingChartObject delay={delay}  zoomed={!isMinimized} segmentData={segmentData} radius={radius} innerRadius={innerRadius} thickness={thickness} gap={gap} inclinaison={inclinaison}  />
+                <RingChartObject delay={delay} text={text}  zoomed={!isMinimized} segmentData={segmentData} radius={radius} innerRadius={innerRadius} thickness={thickness} gap={gap} inclinaison={inclinaison}  />
             </animated.group>
         </group>
     );

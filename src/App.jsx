@@ -47,7 +47,7 @@ function App() {
                     <WorldGlobe args={[3.7, 44, 44]} />
                 </group>
                 <RingChartGroup 
-                    position={[-5.5,3,0]}
+                    position={[-5.5,2.3,0]}
                     title='USER ACTIVITY'
                     segmentData={userActivityData}
                     radius={1.4}
@@ -58,16 +58,17 @@ function App() {
                     delay={500}
                 />
                 <RingChartGroup 
-                    position={[5.5,3,0]}
+                    position={[5.5,2.3,0]}
                     title='TOTAL USER' 
                     segmentData={totalUserData}
                     radius={1.6}
                     innerRadius={1.1}
                     inclinaison={-Math.PI/10}
                     delay={1200}
+                    text='72%'
                 />
                 <RingChartGroup 
-                    position={[-5.5,-3.5,0]}
+                    position={[-5.5,-3.8,0]}
                     title='ACTIVE SESSIONS' 
                     segmentData={userActivityData}
                     radius={1.4}
