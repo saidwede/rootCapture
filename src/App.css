@@ -24,7 +24,7 @@ body{
 .background{
   height: 100%;
   width: 100%;
-  background-color: #000000;
+  background-color: #040005;
   /* background-image: radial-gradient(#3d2350, #100a15, #000016); */
   position: absolute;
   z-index: -1;
@@ -35,37 +35,7 @@ body > * {
   width: 100%;
   position: relative;
 }
-.hdigits, .vdigits{
-  display: flex;
-  flex-wrap: nowrap;
-  font-family: 'RajdhaniSemiBold', sans-serif;
-  color: #a0a0a020;
-  padding-top: 35px;
-  padding-left: 35px;
-}
-.hdigits{
-  flex-direction: horizontal;
-  position: absolute;
-  top: 0px;
-  left: 60px;
-}
-.hdigits span, .vdigits span{
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  width: 60px;
-  height: 60px;
-  flex-shrink: 0;
-}
-.vdigits{
-  flex-direction: column;
-  position: absolute;
-  top: 40px;
-  left: 0px;
-}
-
 .glow {
-
   content:'';
   display:block;
   height:900px;
@@ -78,5 +48,32 @@ body > * {
   left:50%;
   transform: translate(-50%, -50%);
   filter: blur(100px);
-  background-color: #035bff37;
+  background-color: #3a7fff3d;
+}
+.circles{
+  position: absolute;
+  top: -40px;
+  left: 0px;
+  width: 100%;
+}
+.ovelay{
+  position: absolute;
+  top: 0px;
+  height: 0px;
+  width: 100%;
+  height: 100%;
+}
+.ovelay img{
+  position: absolute;
+  z-index: 9999;
+}
+.halo{
+  box-shadow:0 0 200px #2f78ff;
+  position: absolute;
+  height: 500px;
+  width: 500px;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
