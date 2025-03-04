@@ -4,6 +4,7 @@ import { Canvas } from '@react-three/fiber';
 import RingChartGroup from './RingChartGroup';
 import WorldGlobe from './WorldGlobe';
 import Background from './Background';
+import { OrbitControls } from '@react-three/drei';
 
 
 
@@ -32,11 +33,11 @@ function App() {
             <Canvas
                 orthographic
                 camera={{
-                    position: [0, 0, 5],
+                    position: [0, 0, 20],
                     //fov: 45,
                     //near: 0,
                     //far: 1000,
-                    zoom: window.innerWidth*0.045
+                    zoom: 75
                 }}
                 // aspect= {window.innerWidth / window.innerHeight}
             >
@@ -79,7 +80,7 @@ function App() {
                     delay={2200}
                 />
                 {/* Optional: Add controls if you want to interact with the scene */}
-                {/* <OrbitControls /> */}
+                <OrbitControls />
             </Canvas>
         </Router>
     )

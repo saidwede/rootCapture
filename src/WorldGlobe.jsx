@@ -1,16 +1,18 @@
 import { useRef, useMemo, useState, useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import './App.css'
-import { Canvas, useFrame } from '@react-three/fiber';
-import RingChartGroup from './RingChartGroup';
+import { useFrame } from '@react-three/fiber';
 import * as THREE from "three";
-import { OrbitControls, Sphere, Line } from '@react-three/drei';
+import { Sphere } from '@react-three/drei';
 import { useDrag } from "@use-gesture/react";
+import { Html } from '@react-three/drei';
+import Lottie from 'lottie-react';
+import animationData from './assets/pulse.json';
 
 const WorldGlobe = ({ position, args }) => {
   
     const texture = useMemo(() => new THREE.TextureLoader().load("/map.jpg"), []);
     const globeRef = useRef();
+    const sphereRef = useRef();
     const [isDragging, setIsDragging] = useState(false);
     
     useFrame(() => {
@@ -47,21 +49,14 @@ const WorldGlobe = ({ position, args }) => {
     return (
       <group>
         <group ref={globeRef} {...bind()}>
-          <Sphere args={args} position={position}>
+          <Sphere ref={sphereRef} args={args} position={position}>
             <meshStandardMaterial map={texture} />
           </Sphere>
           {/* Radio Waves at Specific Locations */}
           {radioWaveCoords.map((coord, index) => (
-            <RadioWave key={index} position={latLngToCartesian(coord.lat, coord.lng, args[0])} rotation={computeRotation(coord.lat, coord.lng)} />
+            <RadioWave occluders={[sphereRef]} key={index} position={latLngToCartesian(coord.lat, coord.lng, args[0])} rotation={computeRotation(coord.lat, coord.lng)} />
           ))}
         </group>
-        {/* <Circle radius={3.85} color="#bb8fdb" opacity={0.04} />
-        <Circle radius={4.15} color="#bb8fdb" opacity={0.04} />
-        <Circle radius={4.45} color="#bb8fdb" opacity={0.04} />
-        <Circle radius={4.75} color="#bb8fdb" opacity={0.04} />
-        <Circle radius={5.05} color="#ffffff" opacity={0.03} />
-        <Circle radius={5.35} color="#ffffff" opacity={0.02} />
-        <Circle radius={5.65} color="#ffffff" opacity={0.01} /> */}
       </group>
     );
 };
@@ -92,57 +87,13 @@ function computeRotation(lat, lng) {
   return [euler.x, euler.y, euler.z];
 }
 
-function Circle({ radius = 2, segments = 500, color = "blue", opacity = 1 }) {
-    // Create a path for the circle
-    const path = new THREE.Path();
-    path.absarc(0, 0, radius, 0, Math.PI * 2, false); // Full circle
-  
-    // Get points from the path
-    const points = path.getPoints(segments);
-    const geometry = new THREE.BufferGeometry().setFromPoints(points);
-  
-    return <Line transparent opacity={opacity} points={points} color={color} lineWidth={2} geometry={geometry} />;
-}
-
-function RadioWave({position, args=[0.75, 1, 64], rotation}) {
-    const wavesRef = useRef([]);
-    const [waves, setWaves] = useState([]);
-  
-    useFrame(({ clock }) => {
-      const time = clock.elapsedTime;
-  
-      // Add a new wave every second
-      if (waves.length === 0 || time - waves[waves.length - 1].start > 1) {
-        setWaves([...waves, { start: time, scale: 0.1, opacity: 1 }]);
-      }
-  
-      // Update waves
-      setWaves((waves) =>
-        waves
-          .map((wave) => ({
-            ...wave,
-            scale: wave.scale + 0.5,
-            opacity: Math.max(wave.opacity - 0.5, 0),
-          }))
-          .filter((wave) => wave.opacity > 0) // Remove fully faded waves
-      );
-    });
-  
+function RadioWave({position, rotation, occluders}) {
     return (
-      <group position={position} rotation={rotation}>
-        {waves.map((wave, index) => (
-          <group key={index}>
-            <mesh scale={[wave.scale, wave.scale, 1]}>
-             <ringGeometry args={args} /> 
-              <meshBasicMaterial color="#00ff6e" transparent opacity={wave.opacity} side={2} />
-            </mesh>
-            <mesh scale={[1.2*wave.scale, 1.2*wave.scale, 1]}>
-             <ringGeometry args={[2*args[1] - 0.05, 2*args[1], 2*args[2]]} /> 
-              <meshBasicMaterial color="#00ff6e" transparent opacity={wave.opacity - 0.5} side={2} />
-            </mesh>
-          </group>
-        ))}
-      </group>
+      <Html position={position} rotation={rotation} transform occlude={occluders}>
+        <div style={{ position: 'relative', width: '55px', height: '55px' }}>
+          <Lottie style={{position: 'absolute', transform: 'translateY(-50%)', top: '50%'}} animationData={animationData} loop={true} />
+        </div>
+      </Html>
     );
 }
 
