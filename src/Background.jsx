@@ -2,7 +2,6 @@ export default function Background (){
     return(
         <>
             <div className="background">
-                <div className="glow"></div>
                 <img className="circles" src="/img/circles-bg.png" alt="" />
             </div>
             <div className="ovelay">

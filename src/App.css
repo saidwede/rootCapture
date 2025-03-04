@@ -35,12 +35,13 @@ Canvas{
 body{
   height: 100vh;
   width: 100vw;
+  background-color: black;
 }
 .background{
   height: 100%;
   width: 100%;
-  background-color: #040005;
-  /* background-image: radial-gradient(#3d2350, #100a15, #000016); */
+  background: radial-gradient(ellipse at top, #150118, transparent),
+            radial-gradient(ellipse at bottom, #12001f, transparent);
   position: absolute;
   z-index: -1;
   overflow: hidden;
@@ -50,21 +51,6 @@ body > * {
   height: 100%;
   width: 100%;
   position: relative;
-}
-.glow {
-  content:'';
-  display:block;
-  height:900px;
-  width:1000px;
-  border-radius:100%;
-  margin:auto;
-  /* box-shadow:0 0 1000px #031cff; */
-  position:absolute;
-  top:60%;
-  left:50%;
-  transform: translate(-50%, -50%);
-  filter: blur(100px);
-  background-color: #b700ff19;
 }
 .circles{
   position: absolute;
