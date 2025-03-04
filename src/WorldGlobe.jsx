@@ -48,9 +48,9 @@ const WorldGlobe = ({ position, args, haloOcculders=[] }) => {
 
     return (
       <group>
-        <Html {...bind()} portal={document.getElementById('back-layer')} zIndexRange={[0, 5]} occlude={haloOcculders} transform>
+        {/* <Html {...bind()} portal={document.getElementById('back-layer')} zIndexRange={[0, 5]} occlude={haloOcculders} transform>
           <div style={{width: '296px', height: '296px', boxShadow: '0 0 50px #c430ffbb', borderRadius: '50%'}}></div>
-        </Html>
+        </Html> */}
         <group ref={globeRef} {...bind()}>
           <Sphere ref={sphereRef} args={args} position={position}>
             <meshStandardMaterial map={texture} />

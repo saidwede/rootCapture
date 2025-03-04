@@ -3,6 +3,7 @@ export default function Background (){
         <>
             <div className="background">
                 <img className="circles" src="/img/circles-bg.png" alt="" />
+                <div className="halo"></div>
             </div>
             <div className="ovelay">
                 <img

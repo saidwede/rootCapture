@@ -47,6 +47,17 @@ body{
   overflow: hidden;
   color: #00ff6e;
 }
+.halo{
+  box-shadow: 0 0 80px #c430ffbb, 0 0 80px #c430ffbb, inset 0 0 130px #c430ffbb, inset 0 0 130px #c430ffbb;
+  position: absolute;
+  display: inline-block;
+  top: 50.65%;
+  left: 50%;
+  height: 50vh;
+  width: 50vh;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
 body > * {
   height: 100%;
   width: 100%;
