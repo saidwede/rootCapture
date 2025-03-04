@@ -8,14 +8,25 @@
   padding: 0px;
   margin: 0px;
 }
-Canvas{
+.back-layer{
   background: none;
-  width: 100vw;
-  height: 100vh;
   position: absolute;
-  top: 0px;
-  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  /* top: 51.7%; */
+  /* left: 48.87%;
+  transform: translate( -50%, calc(-50% + 32.25vw)); */
+}
+.canvas-container{
+  background: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
   z-index: 1;
+  /* top: 51.7%; */
+  /* left: 4.87%;
+  transform: translate( -50%, calc(-50% + 32.25vw)); */
 }
 body{
   height: 100vh;
@@ -49,13 +60,16 @@ body > * {
   left:50%;
   transform: translate(-50%, -50%);
   filter: blur(100px);
-  background-color: #3a7fff3d;
+  background-color: #b700ff19;
 }
 .circles{
   position: absolute;
-  top: -40px;
+  top: 0px;
   left: 0px;
   width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translate(1.1%, 0.7%);
 }
 .ovelay{
   position: absolute;
@@ -67,20 +81,4 @@ body > * {
 .ovelay img{
   position: absolute;
   z-index: 9999;
-}
-.halo{
-  box-shadow:0 0 200px #2f78ff;
-  position: absolute;
-  height: 30vw;
-  width: 30vw;
-  border-radius: 50%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-@media (orientation: portrait) {
-  .circles{
-    height: 100%;
-    width: initial;
-  }
 }

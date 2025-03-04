@@ -4,37 +4,32 @@ export default function Background (){
             <div className="background">
                 <div className="glow"></div>
                 <img className="circles" src="/img/circles-bg.png" alt="" />
-                <div className="halo"></div>
             </div>
             <div className="ovelay">
                 <img
                     style={{
-                        height: '50px',
-                        width: '50px',
+                        height: '4.5vh',
                         top: '30%',
                         left: '30%'
                     }} 
                 src="/img/Elemnts8.png" alt="" />
                 <img
                     style={{
-                        height: '50px',
-                        width: '50px',
+                        height: '4.5vh',
                         top: '30%',
                         right: '30%'
                     }} 
                 src="/img/Elemnts8.png" alt="" />
                 <img
                     style={{
-                        height: '50px',
-                        width: '50px',
+                        height: '4.5vh',
                         bottom: '30%',
                         right: '30%'
                     }} 
                 src="/img/Elemnts8.png" alt="" />
                 <img
                     style={{
-                        height: '50px',
-                        width: '50px',
+                        height: '3vh',
                         top: '40%',
                         right: '47%'
                     }} 
@@ -44,32 +39,28 @@ export default function Background (){
 
                 <img
                     style={{
-                        height: '50px',
-                        width: '50px',
+                        height: '3vh',
                         top: '30%',
                         right: '42%'
                     }} 
                 src="/img/Elemnts2.png" alt="" />
                 <img
                     style={{
-                        height: '50px',
-                        width: '50px',
+                        height: '3vh',
                         bottom: '30%',
                         left: '30%'
                     }} 
                 src="/img/Elemnts4.png" alt="" />
                 <img
                     style={{
-                        height: '50px',
-                        width: '50px',
+                        height: '3vh',
                         bottom: '45%',
                         right: '30%'
                     }} 
                 src="/img/Elemnts5.png" alt="" />
                 <img
                     style={{
-                        height: '50px',
-                        width: '50px',
+                        height: '3vh',
                         bottom: '45%',
                         left: '40%'
                     }} 

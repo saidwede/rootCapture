@@ -8,7 +8,7 @@ import { Html } from '@react-three/drei';
 import Lottie from 'lottie-react';
 import animationData from './assets/pulse.json';
 
-const WorldGlobe = ({ position, args }) => {
+const WorldGlobe = ({ position, args, haloOcculders=[] }) => {
   
     const texture = useMemo(() => new THREE.TextureLoader().load("/map.jpg"), []);
     const globeRef = useRef();
@@ -48,6 +48,9 @@ const WorldGlobe = ({ position, args }) => {
 
     return (
       <group>
+        <Html portal={document.getElementById('canvas-container')} zIndexRange={[0, -2]} occlude={haloOcculders} transform>
+          <div style={{width: '296px', height: '296px', boxShadow: '0 0 50px #c430ffbb', borderRadius: '50%'}}></div>
+        </Html>
         <group ref={globeRef} {...bind()}>
           <Sphere ref={sphereRef} args={args} position={position}>
             <meshStandardMaterial map={texture} />
@@ -60,6 +63,7 @@ const WorldGlobe = ({ position, args }) => {
       </group>
     );
 };
+
 
 function latLngToCartesian(lat, lng, radius) {
   const phi = (90 - lat) * (Math.PI / 180);
@@ -89,7 +93,7 @@ function computeRotation(lat, lng) {
 
 function RadioWave({position, rotation, occluders}) {
     return (
-      <Html position={position} rotation={rotation} transform occlude={occluders}>
+      <Html portal={document.getElementById('canvas-container')} position={position} rotation={rotation} transform occlude={occluders}>
         <div style={{ position: 'relative', width: '55px', height: '55px' }}>
           <Lottie style={{position: 'absolute', transform: 'translateY(-50%)', top: '50%'}} animationData={animationData} loop={true} />
         </div>
