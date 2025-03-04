@@ -8,7 +8,7 @@
   padding: 0px;
   margin: 0px;
 }
-.back-layer{
+#back-layer{
   background: none;
   position: absolute;
   width: 100%;
@@ -18,7 +18,7 @@
   /* left: 48.87%;
   transform: translate( -50%, calc(-50% + 32.25vw)); */
 }
-.canvas-container{
+#canvas-container{
   background: none;
   position: absolute;
   width: 100%;
@@ -27,6 +27,10 @@
   /* top: 51.7%; */
   /* left: 4.87%;
   transform: translate( -50%, calc(-50% + 32.25vw)); */
+}
+Canvas{
+  position: absolute;
+  z-index: 1;
 }
 body{
   height: 100vh;

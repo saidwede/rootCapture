@@ -81,22 +81,23 @@ function App() {
     return (
         <Router>
             <Background />
-            <Canvas
-                orthographic
-                camera={{
-                    position: [0, 0, 20],
-                    //fov: 45,
-                    //near: 0,
-                    //far: 1000,
-                    zoom: 200
-                }}
-                // aspect= {window.innerWidth / window.innerHeight}
-            >
-
-                <ResponsiveScene />
-                {/* Optional: Add controls if you want to interact with the scene */}
-                {/* <OrbitControls /> */}
-            </Canvas>
+            <div id='back-layer'></div>
+            <div id='canvas-container'>
+                <Canvas
+                    orthographic
+                    camera={{
+                        position: [0, 0, 20],
+                        //fov: 45,
+                        //near: 0,
+                        //far: 1000,
+                        zoom: 200
+                    }}
+                >
+                    <ResponsiveScene />
+                    {/* Optional: Add controls if you want to interact with the scene */}
+                    {/* <OrbitControls /> */}
+                </Canvas>
+            </div>
         </Router>
     )
 }

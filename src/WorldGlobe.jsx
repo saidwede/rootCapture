@@ -13,6 +13,7 @@ const WorldGlobe = ({ position, args, haloOcculders=[] }) => {
     const texture = useMemo(() => new THREE.TextureLoader().load("/map.jpg"), []);
     const globeRef = useRef();
     const sphereRef = useRef();
+    const groupRef = useState();
     const [isDragging, setIsDragging] = useState(false);
     
     useFrame(() => {
@@ -47,8 +48,8 @@ const WorldGlobe = ({ position, args, haloOcculders=[] }) => {
     ];
 
     return (
-      <group>
-        <Html portal={document.getElementById('canvas-container')} zIndexRange={[0, -2]} occlude={haloOcculders} transform>
+      <group ref={groupRef}>
+        <Html {...bind()} portal={document.getElementById('back-layer')} zIndexRange={[0, 5]} occlude={haloOcculders} transform>
           <div style={{width: '296px', height: '296px', boxShadow: '0 0 50px #c430ffbb', borderRadius: '50%'}}></div>
         </Html>
         <group ref={globeRef} {...bind()}>
@@ -93,7 +94,7 @@ function computeRotation(lat, lng) {
 
 function RadioWave({position, rotation, occluders}) {
     return (
-      <Html portal={document.getElementById('canvas-container')} position={position} rotation={rotation} transform occlude={occluders}>
+      <Html portal={document.getElementById('back-layer')}  position={position} rotation={rotation} transform occlude={occluders}>
         <div style={{ position: 'relative', width: '55px', height: '55px' }}>
           <Lottie style={{position: 'absolute', transform: 'translateY(-50%)', top: '50%'}} animationData={animationData} loop={true} />
         </div>
