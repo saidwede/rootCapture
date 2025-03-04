@@ -13,7 +13,6 @@ const WorldGlobe = ({ position, args, haloOcculders=[] }) => {
     const texture = useMemo(() => new THREE.TextureLoader().load("/map.jpg"), []);
     const globeRef = useRef();
     const sphereRef = useRef();
-    const groupRef = useState();
     const [isDragging, setIsDragging] = useState(false);
     
     useFrame(() => {
@@ -48,7 +47,7 @@ const WorldGlobe = ({ position, args, haloOcculders=[] }) => {
     ];
 
     return (
-      <group ref={groupRef}>
+      <group>
         <Html {...bind()} portal={document.getElementById('back-layer')} zIndexRange={[0, 5]} occlude={haloOcculders} transform>
           <div style={{width: '296px', height: '296px', boxShadow: '0 0 50px #c430ffbb', borderRadius: '50%'}}></div>
         </Html>
