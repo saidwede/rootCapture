@@ -23,6 +23,7 @@ function ResponsiveScene() {
         
     ];
     const [usersData, setUsersData] = useState([]);
+    const [coordinates, setCoordinates] = useState([])
     const colors = [
         { color: '#B01A27', textColor: '#ffffff'},
         { color: '#59A9A5', textColor: '#000000'},
@@ -55,6 +56,7 @@ function ResponsiveScene() {
             )
         });
         setUsersData(totalUserData);
+        setCoordinates(jsonData.coordinates);
     }, []);
 
   return (
@@ -62,7 +64,7 @@ function ResponsiveScene() {
       <directionalLight position={[3, 6, 3]} intensity={3} castShadow />
                 <ambientLight intensity={5} />
                 <group position={[0, 0.1, -6.97]} rotation={[0, 0, 0]}>
-                    <WorldGlobe args={[3.9, 44, 44]} />
+                    <WorldGlobe args={[3.9, 44, 44]} coordinates={coordinates} />
                 </group>
                 <group ref={chartGroupRef} >
                     <RingChartGroup 

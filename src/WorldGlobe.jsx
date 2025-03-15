@@ -8,7 +8,7 @@ import { Html } from '@react-three/drei';
 import Lottie from 'lottie-react';
 import animationData from './assets/pulse.json';
 
-const WorldGlobe = ({ position, args, haloOcculders=[] }) => {
+const WorldGlobe = ({ position, args, coordinates=[], haloOcculders=[] }) => {
   
     const texture = useMemo(() => new THREE.TextureLoader().load("/img/map.jpg"), []);
     const globeRef = useRef();
@@ -56,7 +56,7 @@ const WorldGlobe = ({ position, args, haloOcculders=[] }) => {
             <meshStandardMaterial map={texture} />
           </Sphere>
           {/* Radio Waves at Specific Locations */}
-          {radioWaveCoords.map((coord, index) => (
+          {coordinates.map((coord, index) => (
             <RadioWave occluders={[sphereRef]} key={index} position={latLngToCartesian(coord.lat, coord.lng, args[0])} rotation={computeRotation(coord.lat, coord.lng)} />
           ))}
         </group>
