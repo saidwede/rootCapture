@@ -10,7 +10,7 @@ import animationData from './assets/pulse.json';
 
 const WorldGlobe = ({ position, args, haloOcculders=[] }) => {
   
-    const texture = useMemo(() => new THREE.TextureLoader().load("/map.jpg"), []);
+    const texture = useMemo(() => new THREE.TextureLoader().load("/img/map.jpg"), []);
     const globeRef = useRef();
     const sphereRef = useRef();
     const [isDragging, setIsDragging] = useState(false);
@@ -35,7 +35,7 @@ const WorldGlobe = ({ position, args, haloOcculders=[] }) => {
         }
       };
   
-      window.addEventListener("wheel", handleScroll);
+      //window.addEventListener("wheel", handleScroll);
       return () => window.removeEventListener("wheel", handleScroll);
     }, []);
 
@@ -93,7 +93,7 @@ function computeRotation(lat, lng) {
 
 function RadioWave({position, rotation, occluders}) {
     return (
-      <Html portal={document.getElementById('back-layer')}  position={position} rotation={rotation} transform occlude={occluders}>
+      <Html portal={document.getElementById('back-layer')} style={{pointerEvents: 'none'}}  position={position} rotation={rotation} transform occlude={occluders}>
         <div style={{ position: 'relative', width: '55px', height: '55px' }}>
           <Lottie style={{position: 'absolute', transform: 'translateY(-50%)', top: '50%'}} animationData={animationData} loop={true} />
         </div>

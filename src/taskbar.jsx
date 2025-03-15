@@ -5,9 +5,9 @@ import { useState, useEffect } from "react";
 
 
 const Taskbar = ({onClose, onMaximize, onMinimize, onOpen, text, delay}) => {
-    const minimizeTexture = useTexture( "/minimize-sign.png"); // Replace with your image path
-    const maximizeTexture = useTexture( "/maximize.png"); // Replace with your image path
-    const closeTexture = useTexture( "/close.png"); // Replace with your image path
+    const minimizeTexture = useTexture( "/img/minimize-sign.png"); // Replace with your image path
+    const maximizeTexture = useTexture( "/img/maximize.png"); // Replace with your image path
+    const closeTexture = useTexture( "/img/close.png"); // Replace with your image path
     minimizeTexture.wrapS = THREE.RepeatWrapping;
     minimizeTexture.wrapT = THREE.RepeatWrapping;
     minimizeTexture.repeat.set(1, 1); // Adjust as needed

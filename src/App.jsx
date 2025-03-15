@@ -5,13 +5,13 @@ import RingChartGroup from './RingChartGroup';
 import WorldGlobe from './WorldGlobe';
 import Background from './Background';
 import { OrbitControls } from '@react-three/drei';
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { OrthographicCamera} from "@react-three/drei";
 import { useMemo } from "react";
 
 function ResponsiveScene() {
   const { viewport } = useThree(); // Get viewport size
-  const scaleFactor = Math.min(viewport.width, viewport.height) * 0.07; // Scale everything proportionally
+  const scaleFactor = Math.min(viewport.width, viewport.height) * 0.083; // Scale everything proportionally
 
   const userActivityData = [
     { progress: 0.1, color: '#B01A27', text: 'CSS', shift: 0.2},
@@ -22,18 +22,47 @@ function ResponsiveScene() {
         
         
     ];
-    const totalUserData = [
-        { progress: 0.6, color: '#8a2be2', text: 'JSX'},
-        { progress: 0.4, color: '#404040', text: 'CSS'}
+    const [usersData, setUsersData] = useState([]);
+    const colors = [
+        { color: '#B01A27', textColor: '#ffffff'},
+        { color: '#59A9A5', textColor: '#000000'},
+        { color: '#1657AC', textColor: '#ffffff'},
+        { color: '#9C31C6', textColor: '#ffffff'},
+        { color: '#B77417', textColor: '#000000'},
+        { color: '#8a2be2', textColor: '#ffffff'},
+        { color: '#404040', textColor: '#ffffff'}
     ]
     const chartGroupRef = useRef()
+
+    useEffect(() => {
+        const rootDiv = document.getElementById("chart-root");
+        let data = rootDiv.getAttribute("data-json");
+        let jsonData = JSON.parse(data);
+
+        let totalUser = 0;
+        jsonData.users.forEach(element => {
+            totalUser += element.user_count
+        });
+        let totalUserData = [];
+        jsonData.users.forEach((element, index) => {
+            totalUserData.push(
+                { 
+                    progress: element.user_count / totalUser, 
+                    text: element.role_name,
+                    color: colors[index].color, 
+                    textColor: colors[index].textColor
+                }
+            )
+        });
+        setUsersData(totalUserData);
+    }, []);
 
   return (
     <group scale={[scaleFactor, scaleFactor, scaleFactor]}>
       <directionalLight position={[3, 6, 3]} intensity={3} castShadow />
                 <ambientLight intensity={5} />
-                <group position={[0, -0.1, -6.97]} rotation={[0, 0, 0]}>
-                    <WorldGlobe args={[3.7, 44, 44]} />
+                <group position={[0, 0.1, -6.97]} rotation={[0, 0, 0]}>
+                    <WorldGlobe args={[3.9, 44, 44]} />
                 </group>
                 <group ref={chartGroupRef} >
                     <RingChartGroup 
@@ -50,7 +79,7 @@ function ResponsiveScene() {
                     <RingChartGroup 
                         position={[5.5,2.3,0]}
                         title='TOTAL USER' 
-                        segmentData={totalUserData}
+                        segmentData={usersData}
                         radius={1.6}
                         innerRadius={1.1}
                         inclinaison={-Math.PI/10}
@@ -58,7 +87,7 @@ function ResponsiveScene() {
                         text='72%'
                     />
                     <RingChartGroup 
-                        position={[-5.5,-3.8,0]}
+                        position={[-5.5,-3.6,0]}
                         title='ACTIVE SESSIONS' 
                         segmentData={userActivityData}
                         radius={1.4}
