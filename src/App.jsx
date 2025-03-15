@@ -37,27 +37,41 @@ function ResponsiveScene() {
 
     useEffect(() => {
         const rootDiv = document.getElementById("chart-root");
-        let data = rootDiv.getAttribute("data-json");
-        let jsonData = JSON.parse(data);
-
-        let totalUser = 0;
-        jsonData.users.forEach(element => {
-            totalUser += element.user_count
-        });
-        let totalUserData = [];
-        jsonData.users.forEach((element, index) => {
-            totalUserData.push(
-                { 
-                    progress: element.user_count / totalUser, 
-                    text: element.role_name,
-                    color: colors[index].color, 
-                    textColor: colors[index].textColor
-                }
-            )
-        });
-        setUsersData(totalUserData);
-        setCoordinates(jsonData.coordinates);
-    }, []);
+    
+        if (!rootDiv) {
+          console.warn("chart-root div not found");
+          return;
+        }
+    
+        const data = rootDiv.getAttribute("data-json");
+        if (!data) {
+          console.warn("data-json attribute not found");
+          return;
+        }
+    
+        try {
+          const jsonData = JSON.parse(data);
+    
+          if (!jsonData.users || !Array.isArray(jsonData.users)) {
+            console.warn("Invalid users data");
+            return;
+          }
+    
+          let totalUser = jsonData.users.reduce((sum, user) => sum + user.user_count, 0);
+    
+          let totalUserData = jsonData.users.map((element, index) => ({
+            progress: element.user_count / totalUser,
+            text: element.role_name,
+            color: colors[index % colors.length]?.color || "#000",
+            textColor: colors[index % colors.length]?.textColor || "#fff"
+          }));
+    
+          setUsersData(totalUserData);
+          setCoordinates(jsonData.coordinates);
+        } catch (error) {
+          console.error("Error parsing JSON:", error);
+        }
+      }, []);
 
   return (
     <group scale={[scaleFactor, scaleFactor, scaleFactor]}>
