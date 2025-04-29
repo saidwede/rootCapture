@@ -94,7 +94,7 @@ function computeRotation(lat, lng) {
 function RadioWave({position, rotation, occluders}) {
     return (
       <Html portal={document.getElementById('back-layer')} style={{pointerEvents: 'none'}}  position={position} rotation={rotation} transform occlude={occluders}>
-        <div style={{ position: 'relative', width: '55px', height: '55px' }}>
+        <div style={{ position: 'relative', width: '40px', height: '40px' }}>
           <Lottie style={{position: 'absolute', transform: 'translateY(-50%)', top: '50%'}} animationData={animationData} loop={true} />
         </div>
       </Html>

@@ -48,7 +48,7 @@ function ResponsiveScene() {
           console.warn("data-json attribute not found");
           return;
         }
-    
+    console.log(data);
         try {
           const jsonData = JSON.parse(data);
     
@@ -60,11 +60,33 @@ function ResponsiveScene() {
           let totalUser = jsonData.users.reduce((sum, user) => sum + user.user_count, 0);
     
           let totalUserData = jsonData.users.map((element, index) => ({
-            progress: element.user_count / totalUser,
+            progress: (element.user_count / totalUser) * 100,
             text: element.role_name,
             color: colors[index % colors.length]?.color || "#000",
             textColor: colors[index % colors.length]?.textColor || "#fff"
-          }));
+        }));
+        
+        // Step 1: Floor values and calculate total floored sum
+        let floored = totalUserData.map(item => Math.floor(item.progress));
+        let remainder = 100 - floored.reduce((sum, val) => sum + val, 0);
+        
+        // Step 2: Sort by largest remainder and distribute the remainder
+        let remainders = totalUserData.map((item, index) => ({
+            index,
+            remainder: item.progress - floored[index]
+        }));
+        remainders.sort((a, b) => b.remainder - a.remainder);
+        
+        // Step 3: Distribute the remaining points
+        for (let i = 0; i < remainder; i++) {
+            floored[remainders[i].index]++;
+        }
+        
+        // Step 4: Convert back to decimal values
+        totalUserData = totalUserData.map((item, index) => ({
+            ...item,
+            progress: floored[index] / 100 // Ensure 2 decimal places
+        }));
     
           setUsersData(totalUserData);
           setCoordinates(jsonData.coordinates);
