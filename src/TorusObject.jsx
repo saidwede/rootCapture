@@ -98,20 +98,20 @@ const CurvedLine = ({ startPoint, angle, length = 0.5, color, progress, text, te
             <group position={points.end2} rotation={[(1/2)*Math.PI , 0, (1/2)*Math.PI]} ref={textAreaRef}>
                 <RoundedRectangle 
                     color={color} 
-                    height={2}
-                    width={0.22}
+                    height={1.5}
+                    width={0.17}
                     radius={0.07}
                     position={[
                         0,
-                        (leftAngle ? 1 : -1) * 1,
+                        (leftAngle ? 0.75 : -0.75) * 1,
                         0
                     ]}
                     opacity={opacity}
                 />
                 <Text
-                    position={[0.01, (leftAngle ? 1 : -1) * 1, 0.012]} // Adjust to place text slightly above
+                    position={[0.01, (leftAngle ? 0.75 : -0.75) * 1, 0.012]} // Adjust to place text slightly above
                     rotation={[0, 0, -Math.PI/2]}
-                    fontSize={0.20}
+                    fontSize={0.13}
                     fontWeight={600}
                     fontFamily={"Inter"}
                     anchorX="center"
